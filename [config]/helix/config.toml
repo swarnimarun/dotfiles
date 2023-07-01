@@ -1,0 +1,44 @@
+theme = "onedark"
+
+[editor]
+line-number = "relative"
+mouse = false
+bufferline = "always"
+cursorline = true
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.lsp]
+display-messages = true
+display-inlay-hints = true
+auto-signature-help = true
+
+[editor.file-picker]
+git-ignore = true
+ignore = true
+max-depth = 10
+hidden = false
+
+[keys.normal]
+H = "jump_view_left"
+J = "jump_view_down"
+K = "jump_view_up"
+L = "jump_view_right"
+V = "vsplit"
+B = "hsplit"
+M = ":n"
+C-q = "wclose"
+Q = ":bc"
+W = ":w"
+y = ":clipboard-yank"
+p = ":clipboard-paste-before"
+P = ":clipboard-paste-after"
+D = [":clipboard-yank", "delete_selection"]
+d = "delete_selection"
+C-r = [":config-reload", ":lsp-restart"]
+C-o = ":config-open"
+
+[keys.insert]
