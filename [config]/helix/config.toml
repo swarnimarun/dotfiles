@@ -1,4 +1,4 @@
-theme = "onedark"
+theme = "dark_plus"
 
 [editor]
 line-number = "relative"
@@ -40,5 +40,3 @@ D = [":clipboard-yank", "delete_selection"]
 d = "delete_selection"
 C-r = [":config-reload", ":lsp-restart"]
 C-o = ":config-open"
-
-[keys.insert]
