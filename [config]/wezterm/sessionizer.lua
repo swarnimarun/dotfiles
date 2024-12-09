@@ -18,7 +18,7 @@ local function err_if_not(name, err_message)
     w.log_error(err_message)
   end
 end
---
+
 --- path if file or directory exists nil otherwise
 ---@param path string
 local function file_exists(path)
@@ -36,31 +36,21 @@ local function file_exists(path)
   return nil
 end
 
--------------------------------------------------------
--- PATHS
---
 local fd = (
-  file_exists(home .. '/bin/fd')
-  or file_exists 'usr/bin/fd'
+  file_exists '/usr/bin/fd'
+  or file_exists(home .. '/bin/fd')
   or file_exists(home .. '/.cargo/bin/fd.exe')
   or file_exists '/ProgramData/chocolatey/bin/fd.exe'
 )
 err_if_not(fd, 'fd not found')
 
-local git = (file_exists '/usr/bin/git' or file_exists '/Program Files/Git/cmd/git.exe')
-err_if_not(git, 'git not found')
-
 local srcPath = home .. '/source'
 err_if_not(srcPath, srcPath .. ' not found')
 
 local search_folders = {
-  srcPath,
+  srcPath .. '/repos/swarnimarun',
   srcPath .. '/repos',
-  srcPath .. '/repos/github.com',
-  srcPath .. '/repos/github.com/swarnimarun',
-  srcPath .. '/repos/github.com/cedana',
 }
--------------------------------------------------------
 
 --- Merge numeric tables
 ---@param t1 table
@@ -78,19 +68,8 @@ local function merge_tables(t1, t2)
 end
 
 M.start = function(window, pane)
-  local projects = {}
+  local projects = { }
 
-  -- assumes  ~/src/www, ~/src/work to exist
-  -- ~/src
-  --  ├──nushell-config       # toplevel config stuff
-  --  ├──wezterm-config
-  --  ├──work                    # work stuff
-  --    ├──work/project.git      # git bare clones marked with .git at the end
-  --    ├──work/project-bugfix   # worktree of project.git
-  --    ├──work/project-feature  # worktree of project.git
-  --  │ └───31 unlisted
-  --  └──other                # 3rd party project
-  --     └──103 unlisted
   local cmd = merge_tables({ fd, '-HI', '-td', '--max-depth=1', '.' }, search_folders)
   w.log_info 'cmd: '
   w.log_info(cmd)
@@ -98,6 +77,7 @@ M.start = function(window, pane)
   for _, value in ipairs(cmd) do
     w.log_info(value)
   end
+
   local success, stdout, stderr = w.run_child_process(cmd)
 
   if not success then
@@ -106,12 +86,35 @@ M.start = function(window, pane)
   end
 
   for line in stdout:gmatch '([^\n]*)\n?' do
-    local project = normalize_path(line)
-    local label = project
-    local id = project
-    table.insert(projects, { label = tostring(label), id = tostring(id) })
+    -- create label from file path
+    local project = line:gsub("/.git.*", "")
+    project = project:gsub("/$", "")
+
+    -- extract id. Used for workspace name
+    local _, _, id = string.find(project, ".*/(.+)")
+    id = id:gsub(".git", "") -- bare repo dirs typically end in .git, remove if so.
+
+    table.insert(projects, { label = tostring(project), id = tostring(id) })
+    -- local project = normalize_path(line)
+    -- local label = project
+    -- local id = project
+    -- table.insert(projects, { label = tostring(label), id = tostring(id) })
   end
 
+  local deduped_projects = {}
+  local hash = {}
+  for _, value in ipairs(projects) do
+    if (not hash[value.id]) then
+        table.insert(deduped_projects, value)
+    end
+    hash[value.id] = value
+  end
+  local wezterm = home .. '/.config/wezterm'
+  local nvim = home .. '/.config/nvim'
+  table.insert(deduped_projects, { label = wezterm, id = 'wezterm' })
+  table.insert(deduped_projects, { label = nvim, id = 'nvim' })
+
+  w.GLOBAL.previous_workspace = window:active_workspace()
   window:perform_action(
     act.InputSelector {
       action = w.action_callback(function(win, _, id, label)
@@ -124,7 +127,7 @@ M.start = function(window, pane)
       end),
       fuzzy = true,
       title = 'Select project',
-      choices = projects,
+      choices = deduped_projects,
     },
     pane
   )
