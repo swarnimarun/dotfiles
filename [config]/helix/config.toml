@@ -5,6 +5,7 @@ line-number = "relative"
 mouse = false
 bufferline = "always"
 cursorline = true
+soft-wrap = { enable = true }
 
 [editor.cursor-shape]
 insert = "bar"
@@ -23,12 +24,9 @@ max-depth = 10
 hidden = false
 
 [keys.normal]
-H = "jump_view_left"
-J = "jump_view_down"
-K = "jump_view_up"
-L = "jump_view_right"
-V = "vsplit"
-B = "hsplit"
+K = "hover"
+C-b = "hsplit"
+C-v = "hsplit"
 M = ":n"
 C-q = "wclose"
 Q = ":bc"
@@ -39,4 +37,27 @@ P = ":clipboard-paste-after"
 D = [":clipboard-yank", "delete_selection"]
 d = "delete_selection"
 C-r = [":config-reload", ":lsp-restart"]
-C-o = ":config-open"
+C-O = ":config-open"
+
+
+[keys.select]
+V = "exit_select_mode"
+C-h = "jump_view_left"
+C-j = "jump_view_down"
+C-k = "jump_view_up"
+C-l = "jump_view_right"
+C-B = "hsplit"
+C-V = "hsplit"
+M = ":n"
+C-q = "wclose"
+Q = ":bc"
+W = ":w"
+y = ":clipboard-yank"
+"C-/" = "toggle_comments"
+p = ":clipboard-paste-before"
+P = ":clipboard-paste-after"
+D = [":clipboard-yank", "delete_selection"]
+d = "delete_selection"
+C-r = [":config-reload", ":lsp-restart"]
+C-O = ":config-open"
+

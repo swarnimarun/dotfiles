@@ -1,6 +1,6 @@
 [language-server.deno-server]
-  command = "deno"
-  args = ["lsp"]
+command = "deno"
+args = ["lsp"]
   [[config.inlayHints]]
   enable = true
   lint = true
@@ -13,7 +13,7 @@
   variableTypes = { enabled = true, suppressWhenTypeMatchesName = false }
 
 [language-server.clangd]
-  config = { "clangd.path" = "/opt/homebrew/opt/llvm/bin/clangd", "clangd.compilationDatabaseCandidates" = [ "${workspaceFolder}/build" ] }
+config = { "clangd.path" = "clangd", "clangd.compilationDatabaseCandidates" = [ "${workspaceFolder}/build" ] }
 
 [[language]]
 name = "javascript"
@@ -66,3 +66,7 @@ indent = { tab-width = 2, unit = "  " }
 name = "json"
 auto-format = true
 indent = { tab-width = 4, unit = "  " }
+
+# [language-server.rust-analyzer]
+# args = ["client", "--server-path", "rust-analyzer"]
+# command = "/Users/swarnimarun/.cargo/bin/ra-multiplex"

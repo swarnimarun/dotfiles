@@ -1,38 +1,31 @@
 local wezterm = require("wezterm")
-local sessionizer = require("sessionizer")
 
 -- config fields
-local config = {
-    -- range =  0.0 .. 1.0
-    -- window_background_opacity = 1.0,
-    -- text_background_opacity = 0.9,
-    -- win32_system_backdrop = "Acrylic",
-    -- win32_system_backdrop = 'Tabbed',
-}
+local config = {}
 
 config.window_decorations = "RESIZE"
--- default is 12.0
 config.font_size = 12.0
-config.font_dirs = { "C:\\Windows\\Fonts" }
 config.font = wezterm.font_with_fallback({
     -- possible weights :: "Thin", "ExtraLight", "Light", "DemiLight", "Book", "Regular", "Medium", "DemiBold", "Bold", "ExtraBold", "Black", "ExtraBlack",
     -- { family = "MonaspiceNe NF", weight = "Medium" },
-    { family = "JetBrainsMono NFM", weight = "Medium" },
+    -- { family = 'CaskaydiaCove Nerd Font Mono', weight = 'Book' },
+    "JetBrains Mono",
+    -- { family = 'Geist Mono', weight = 'Bold' },
+    -- "FiraCode Nerd Font Mono",
+    -- 'DengXian',
 })
 
 -- harfbuzz_features is required for setting texture healing with Monaspace
 -- !==, ===, ==, =/=, </, </>, |>, <|, .=, .-, >=
 config.harfbuzz_features = {
-    "ss01", "ss02", "ss03",
-    "ss04", "ss05", "ss06",
-    "ss07", "ss08", "calt", "dlig"
+    "ss01",
+    -- "ss02", "ss03", "ss04", "ss05", "ss06", "ss07", "ss08", "calt", "dlig"
 }
 
 config.color_scheme = 'Dark+'
-config.enable_tab_bar = false
 config.audible_bell = "Disabled"
-
-config.default_prog = { "nu.exe" }
+-- on windows use nu.exe
+config.default_prog = { "fish" }
 
 config.mouse_bindings = {
   {
@@ -40,35 +33,10 @@ config.mouse_bindings = {
     mods = 'NONE',
     action = wezterm.action.OpenLinkAtMouseCursor,
   },
-  -- {
-  --   event = { Up = { streak = 1, button = "Left" } },
-  --   mods = "NONE",
-  --   action = wezterm.action.Nop,
-  -- },
 }
--- config.mouse_bindings = {
---     {
---         event = { Up = { streak = 1, button = "Left" } },
---         mods = "NONE",
---         action = wezterm.action.Nop,
---     },
---     -- Bind 'Up' event of CTRL-Click to open hyperlinks
---     {
---         event = { Up = { streak = 1, button = "Left" } },
---         mods = "CTRL",
---         action = wezterm.action.OpenLinkAtMouseCursor,
---     },
---     -- Disable the 'Down' event of CTRL-Click to avoid weird program behaviors
---     {
---         event = { Down = { streak = 1, button = "Left" } },
---         mods = "CTRL",
---         action = wezterm.action.Nop,
---     },
--- }
 
 config.keys = {
     -- fuzzy search & select workspace
-    { key = "f", mods = "CTRL", action = wezterm.action_callback(sessionizer.start) },
     {
         key = "i",
         mods = "CTRL|SHIFT",
@@ -166,4 +134,59 @@ config.keys = {
     },
 }
 
+local sessionizer = wezterm.plugin.require "https://github.com/mikkasendke/sessionizer.wezterm"
+sessionizer.config= {
+    paths = {
+        "/Users/swarnimarun/repos/gitlab.com",
+        "/Users/swarnimarun/repos/sourcehut.com",
+        "/Users/swarnimarun/repos/github.com",
+        "/Users/swarnimarun/repos/github.com/steincodes",
+        "/Users/swarnimarun/repos/github.com/swarnimarun",
+    },
+    command_options = {
+        fd_path = "/Users/swarnimarun/.cargo/bin/fd",
+    }
+}
+sessionizer.apply_to_config(config)
+
+local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
+tabline.setup({
+  options = {
+    icons_enabled = true,
+    theme = 'GruvboxDark',
+    tabs_enabled = true,
+    theme_overrides = {},
+    section_separators = {
+      left = wezterm.nerdfonts.pl_left_hard_divider,
+      right = wezterm.nerdfonts.pl_right_hard_divider,
+    },
+    component_separators = {
+      left = wezterm.nerdfonts.pl_left_soft_divider,
+      right = wezterm.nerdfonts.pl_right_soft_divider,
+    },
+    tab_separators = {
+      left = wezterm.nerdfonts.pl_left_hard_divider,
+      right = wezterm.nerdfonts.pl_right_hard_divider,
+    },
+  },
+  sections = {
+    tabline_a = { 'mode' },
+    tabline_b = { 'workspace' },
+    tabline_c = { '' },
+    tab_active = {
+        { 'process' },
+    },
+    tab_inactive = {
+        { 'process' }
+    },
+    tabline_x = { 'ram', 'cpu' },
+    tabline_y = { '' },
+    tabline_z = { 'datetime', 'battery' },
+  },
+  extensions = {},
+})
+tabline.apply_to_config(config)
+config.tab_bar_at_bottom = true
+
 return config
+
