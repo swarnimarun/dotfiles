@@ -1,0 +1,29 @@
+[user]
+name = "Swarnim Arun"
+email = "swarnimarun11@gmail.com"
+
+# [diff]
+# tool = "delta -s --dark"
+
+[ui]
+default-command = "log" # I recommend either st or log as default command
+diff-format = "git"
+diff-formatter = ":git"
+# conflict-marker-style = "git"
+# diff-formatter = ":git" # required by `delta`
+# pager=["delta", "--line-numbers", "--dark", "-s", "--pager", "less -FRX"] # Keeps output from the terminal after closing the pager
+
+# These options allow for `jj diff` and `jj show` to clear the output from the terminal after closing the pager.
+[[--scope]]
+--when.commands = ["diff", "show"]
+
+[--scope.ui]
+pager = "delta"
+
+[git]
+subprocess = true
+
+[signing]
+behavior = "own"
+backend = "gpg"
+key = "1A0C34AE02141BA4"
