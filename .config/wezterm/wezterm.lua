@@ -4,7 +4,10 @@ local wezterm = require("wezterm")
 local config = {}
 
 config.window_decorations = "RESIZE"
-config.font_size = 12.0
+-- should be around 10 on windows 1440p
+config.font_size = 10.0
+-- should be around 12 on macos
+-- config.font_size = 12.0
 config.font = wezterm.font_with_fallback({
     -- possible weights :: "Thin", "ExtraLight", "Light", "DemiLight", "Book", "Regular", "Medium", "DemiBold", "Bold", "ExtraBold", "Black", "ExtraBlack",
     -- { family = "MonaspiceNe NF", weight = "Medium" },
@@ -18,15 +21,13 @@ config.font = wezterm.font_with_fallback({
 -- harfbuzz_features is required for setting texture healing with Monaspace
 -- !==, ===, ==, =/=, </, </>, |>, <|, .=, .-, >=
 config.harfbuzz_features = {
-    "ss01",
-    -- "ss02", "ss03", "ss04", "ss05", "ss06", "ss07", "ss08", "calt", "dlig"
+    "ss01", "ss02", "ss03", "ss04", "ss05", "ss06", "ss07", "ss08", "calt", "dlig"
 }
 
 config.color_scheme = 'Dark+'
 config.audible_bell = "Disabled"
-config.default_prog = {
-    "/usr/local/bin/fish"
-}
+-- on windows use nu.exe
+config.default_prog = { "nu.exe" }
 
 config.mouse_bindings = {
   {
@@ -36,20 +37,84 @@ config.mouse_bindings = {
   },
 }
 
+local sessionizer = wezterm.plugin.require "https://github.com/mikkasendke/sessionizer.wezterm"
+local history = wezterm.plugin.require "https://github.com/mikkasendke/sessionizer-history"
+
+local schema = {
+    options = { callback = history.Wrapper(sessionizer.DefaultCallback) },
+    sessionizer.DefaultWorkspace {},
+    history.MostRecentWorkspace {},
+
+    wezterm.home_dir .. "/repos/github.com/swarnimarun",
+    wezterm.home_dir .. "/.config/wezterm",
+    wezterm.home_dir .. "/.config/helix",
+
+    sessionizer.FdSearch(wezterm.home_dir .. "/repos/github.com"),
+
+    processing = sessionizer.for_each_entry(function(entry)
+        entry.label = entry.label:gsub(wezterm.home_dir, "~")
+    end)
+}
+
+local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
+tabline.setup({
+  options = {
+    icons_enabled = true,
+    theme = 'GruvboxDark',
+    tabs_enabled = true,
+    theme_overrides = {},
+    section_separators = {
+      left = wezterm.nerdfonts.pl_left_hard_divider,
+      right = wezterm.nerdfonts.pl_right_hard_divider,
+    },
+    component_separators = {
+      left = wezterm.nerdfonts.pl_left_soft_divider,
+      right = wezterm.nerdfonts.pl_right_soft_divider,
+    },
+    tab_separators = {
+      left = wezterm.nerdfonts.pl_left_hard_divider,
+      right = wezterm.nerdfonts.pl_right_hard_divider,
+    },
+  },
+  sections = {
+    tabline_a = { 'mode' },
+    tabline_b = { 'workspace' },
+    tabline_c = { '' },
+    tab_active = {
+        { 'process' },
+    },
+    tab_inactive = {
+        { 'process' }
+    },
+    tabline_x = { 'ram', 'cpu' },
+    tabline_y = { '' },
+    tabline_z = { 'datetime', 'battery' },
+  },
+  extensions = {},
+})
+tabline.apply_to_config(config)
+
+config.tab_bar_at_bottom = true
+
 config.keys = {
-    -- fuzzy search & select workspace
+    { key = "Q", mods = "CTRL|SHIFT", action = wezterm.action.ActivateCopyMode },
+    -- sessionizer
     {
-        key = "i",
-        mods = "CTRL|SHIFT",
-        action = wezterm.action.ShowLauncherArgs({ flags = "FUZZY|WORKSPACES" }),
+        key = "m",
+        mods = "ALT",
+        action = history.switch_to_most_recent_workspace
+    },
+    {
+        key = "s",
+        mods = "ALT",
+        action = sessionizer.show(schema)
     },
     -- fuzzy search & select tabs
     {
-        key = "o",
+        key = "O",
         mods = "CTRL|SHIFT",
         action = wezterm.action.ShowLauncherArgs({ flags = "FUZZY|TABS" }),
     },
-    -- fuzzy search & select tabs
     {
         key = "H",
         mods = "CTRL",
@@ -135,59 +200,4 @@ config.keys = {
     },
 }
 
-local sessionizer = wezterm.plugin.require "https://github.com/mikkasendke/sessionizer.wezterm"
-sessionizer.config= {
-    paths = {
-        "/Users/swarnimarun/repos/github.com/aftershootco",
-        "/Users/swarnimarun/repos/github.com/prassoai",
-        "/Users/swarnimarun/repos/github.com/steincodes",
-        "/Users/swarnimarun/repos/github.com/cedana",
-        "/Users/swarnimarun/repos/github.com/swarnimarun",
-    },
-    command_options = {
-        fd_path = "/Users/swarnimarun/.cargo/bin/fd",
-    }
-}
-sessionizer.apply_to_config(config)
-
-local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
-tabline.setup({
-  options = {
-    icons_enabled = true,
-    theme = 'GruvboxDark',
-    tabs_enabled = true,
-    theme_overrides = {},
-    section_separators = {
-      left = wezterm.nerdfonts.pl_left_hard_divider,
-      right = wezterm.nerdfonts.pl_right_hard_divider,
-    },
-    component_separators = {
-      left = wezterm.nerdfonts.pl_left_soft_divider,
-      right = wezterm.nerdfonts.pl_right_soft_divider,
-    },
-    tab_separators = {
-      left = wezterm.nerdfonts.pl_left_hard_divider,
-      right = wezterm.nerdfonts.pl_right_hard_divider,
-    },
-  },
-  sections = {
-    tabline_a = { 'mode' },
-    tabline_b = { 'workspace' },
-    tabline_c = { '' },
-    tab_active = {
-        { 'process' },
-    },
-    tab_inactive = {
-        { 'process' }
-    },
-    tabline_x = { 'ram', 'cpu' },
-    tabline_y = { '' },
-    tabline_z = { 'datetime', 'battery' },
-  },
-  extensions = {},
-})
-tabline.apply_to_config(config)
-config.tab_bar_at_bottom = true
-
 return config
-
