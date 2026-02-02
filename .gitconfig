@@ -11,3 +11,36 @@
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
+
+[alias]
+	# status
+	st = status -sb
+	lg = log --oneline --graph --decorate --all
+	last = log -1 HEAD
+	who = shortlog -sn
+	# workflow
+	a = add
+	aa = add -A
+	cm = commit -m
+	ca = commit --amend
+	cane = commit --amend --no-edit
+	# navigation
+	br = branch
+	co = checkout
+	cob = checkout -b
+	recent = branch --sort=-committerdate --format='%(committerdate:relative) %(refname:short)'
+	# pruning
+	prune-all = fetch --prune --all
+	gone = branch -vv | grep ': gone]' | awk '{print $1}' | xargs -r git branch -d
+	# diff
+	d = diff
+	dc = diff --cached
+	worddiff = diff --word-diff
+	blamec = blame -w -C -C
+	# more diff utils
+	files = diff --name-status
+	changed = diff --stat
+	unstage = reset HEAD --
+	# misc.
+	root = rev-parse --show-toplevel
+	aliases = config --get-regexp ^alias\\.
