@@ -1,0 +1,63 @@
+theme = "dark_plus"
+
+[editor]
+line-number = "relative"
+mouse = false
+bufferline = "always"
+cursorline = true
+soft-wrap = { enable = true }
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.lsp]
+display-messages = true
+display-inlay-hints = true
+auto-signature-help = true
+
+[editor.file-picker]
+git-ignore = true
+ignore = true
+max-depth = 10
+hidden = false
+
+[keys.normal]
+K = "hover"
+C-b = "hsplit"
+C-v = "hsplit"
+M = ":n"
+C-q = "wclose"
+Q = ":bc"
+W = ":w"
+y = ":clipboard-yank"
+p = ":clipboard-paste-before"
+P = ":clipboard-paste-after"
+D = [":clipboard-yank", "delete_selection"]
+d = "delete_selection"
+C-r = [":config-reload", ":lsp-restart"]
+C-O = ":config-open"
+
+
+[keys.select]
+V = "exit_select_mode"
+C-h = "jump_view_left"
+C-j = "jump_view_down"
+C-k = "jump_view_up"
+C-l = "jump_view_right"
+C-B = "hsplit"
+C-V = "hsplit"
+M = ":n"
+C-q = "wclose"
+Q = ":bc"
+W = ":w"
+y = ":clipboard-yank"
+"C-/" = "toggle_comments"
+p = ":clipboard-paste-before"
+P = ":clipboard-paste-after"
+D = [":clipboard-yank", "delete_selection"]
+d = "delete_selection"
+C-r = [":config-reload", ":lsp-restart"]
+C-O = ":config-open"
+

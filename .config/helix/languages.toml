@@ -1,0 +1,3 @@
+# [language-server.rust-analyzer]
+# args = ["client", "--server-path", "rust-analyzer"]
+# command = "/Users/swarnimarun/.cargo/bin/ra-multiplex"

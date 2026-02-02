@@ -1,0 +1,36 @@
+#:tombi schema.strict = true
+#:schema https://jj-vcs.github.io/jj/latest/config-schema.json
+
+[user]
+name = "Swarnim Arun"
+email = "swarnimarun11@gmail.com"
+
+[ui]
+default-command = "log" # I recommend either st or log as default command
+diff-formatter = ":git"
+
+[[--scope]]
+--when.commands = ["diff", "show"]
+
+[--scope.ui]
+pager = "delta"
+
+[git]
+private-commits = "description('wip:*') | description('private:*')"
+
+[templates]
+git_push_bookmark = '"swarnim/pr-" ++ change_id.short()'
+
+# track all origin bookmarks
+[remotes.origin]
+auto-track-bookmarks = "*"
+
+# for forks only track main of the upstream
+[remotes.upstream]
+auto-track-bookmarks = "main | develop | master"
+
+[signing]
+behavior = "own"
+backend = "gpg"
+key = "1A0C34AE02141BA4"
+

@@ -1,0 +1,35 @@
+# Ignore everything
+*
+
+# Track specific files
+!.gitignore
+!.config
+
+!.config/gitui
+!.config/gitui/keybindings.ron
+
+!.config/jj
+!.config/jj/config.toml
+
+!.config/helix
+!.config/helix/config.toml
+!.config/helix/languages.toml
+
+!.config/fish
+!.config/fish/config.fish
+
+!.config/wezterm
+!.config/wezterm/wezterm.lua
+
+!.gitconfig
+
+!.config/starship.toml
+
+!.config/zed/
+!.config/zed/settings.json
+
+!.config/opencode/
+!.config/opencode/opencode.json
+
+!.cargo/
+!.cargo/config.toml

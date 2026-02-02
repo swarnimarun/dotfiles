@@ -1,0 +1,13 @@
+[user]
+	name = Swarnim Arun
+	email = swarnimarun11@gmail.com
+	signingkey = 1A0C34AE02141BA4
+[commit]
+	gpgsign = true
+[tag]
+	gpgSign = true
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
