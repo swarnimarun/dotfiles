@@ -5,9 +5,9 @@ local config = {}
 
 config.window_decorations = "RESIZE"
 -- should be around 10 on windows 1440p
-config.font_size = 10.0
+-- config.font_size = 10.0
 -- should be around 12 on macos
--- config.font_size = 12.0
+config.font_size = 12.0
 config.font = wezterm.font_with_fallback({
     -- possible weights :: "Thin", "ExtraLight", "Light", "DemiLight", "Book", "Regular", "Medium", "DemiBold", "Bold", "ExtraBold", "Black", "ExtraBlack",
     -- { family = "MonaspiceNe NF", weight = "Medium" },
@@ -27,7 +27,8 @@ config.harfbuzz_features = {
 config.color_scheme = 'Dark+'
 config.audible_bell = "Disabled"
 -- on windows use nu.exe
-config.default_prog = { "nu.exe" }
+-- config.default_prog = { "nu.exe" }
+config.default_prog = { "fish" }
 
 config.mouse_bindings = {
   {
