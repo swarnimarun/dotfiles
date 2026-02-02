@@ -60,4 +60,3 @@ D = [":clipboard-yank", "delete_selection"]
 d = "delete_selection"
 C-r = [":config-reload", ":lsp-restart"]
 C-O = ":config-open"
-
