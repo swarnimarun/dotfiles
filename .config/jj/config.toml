@@ -34,3 +34,88 @@ behavior = "own"
 backend = "gpg"
 key = "1A0C34AE02141BA4"
 
+[aliases]
+# --------------------
+# Status / log
+# --------------------
+graph = ["log", "--stat", "-r", "::@"]
+last = ["log", "-r", "@", "--limit", "1"]
+what = ["log", "-r", "::@", "--summary"]
+
+# --------------------
+# Workflow (add/commit equivalents)
+# --------------------
+ft = ["file", "track"]
+
+# --------------------
+# Create bookmark (branches in git)
+# --------------------
+bc = ["bookmark", "create"]
+bt = ["bookmark", "track", "--remote", "origin"]
+
+# Recently updated branches
+recent = [
+  "bookmark",
+  "list",
+  "--stat",
+  "--sort", "committer-date"
+]
+
+# --------------------
+# Pruning / cleanup
+# --------------------
+prune-all = ["git", "fetch", "--prune"]
+
+# --------------------
+# Diff helpers
+# --------------------
+# d = ["diff"]
+# dc = ["diff", "--staged"]
+# worddiff = ["diff", "--word"]
+# blamec = ["file", "annotate"]
+
+# --------------------
+# More diff utilities
+# --------------------
+# files = ["diff", "--name-only"]
+# changed = ["diff", "--stat"]
+# unstage = ["file", "untrack"]
+
+# --------------------
+# Misc
+# --------------------
+aliases = ["config", "list", "aliases"]
+
+bl = [
+  "bookmark",
+  "list",
+  "--template",
+  """
+if(normal_target,
+  label("bookmark",
+    if(remote, name ++ "@" ++ remote, name)
+  ) ++ " "
+  ++ label("commit_id",
+       normal_target.commit_id().short()
+     )
+  ++ "\n"
+  ++ label("description",
+       "> " ++ normal_target.description().first_line()
+     )
+  ++ " "
+  ++ label("stat",
+       "(+" ++ normal_target.diff().stat().total_added()
+       ++ "/-" ++ normal_target.diff().stat().total_removed()
+       ++ ", " ++ normal_target.diff().stat().files().len() ++ " files)"
+     )
+  ++ "\n"
+  ++ normal_target.diff().files()
+       .map(|f|
+         label("file", "    • " ++ f.path())
+       )
+       .join("\n")
+  ++ "\n\n",
+  label("conflict", name ++ " (no target)\n\n")
+)
+"""
+]
