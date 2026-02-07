@@ -41,7 +41,7 @@
 	# pruning
 	prune-all = fetch --prune --all
 	# todo: implement gone for windows
-	# gone = branch -vv | grep ': gone]' | awk '{print $1}' | xargs -r git branch -d
+	gone = branch -vv | grep ': gone]' | awk '{print $1}' | xargs -r git branch -d
 	# diff
 	d = diff
 	dc = diff --cached
