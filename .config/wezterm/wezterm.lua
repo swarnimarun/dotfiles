@@ -7,6 +7,9 @@ config.window_decorations = "RESIZE"
 -- should be around 10 on windows 1440p
 -- config.font_size = 10.0
 -- should be around 12 on macos
+-- config.window_background_opacity = 0.95
+-- config.text_background_opacity = 0.53
+
 config.font_size = 12.0
 config.font = wezterm.font_with_fallback({
     -- possible weights :: "Thin", "ExtraLight", "Light", "DemiLight", "Book", "Regular", "Medium", "DemiBold", "Bold", "ExtraBold", "Black", "ExtraBlack",

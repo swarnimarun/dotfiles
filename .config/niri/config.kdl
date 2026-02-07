@@ -119,7 +119,7 @@ layout {
     // - "always", the focused column will always be centered.
     // - "on-overflow", focusing a column will center it if it doesn't fit
     //   together with the previously focused column.
-    center-focused-column "never"
+    center-focused-column "on-overflow"
 
     // You can customize the widths that "switch-preset-column-width" (Mod+R) toggles between.
     preset-column-widths {
@@ -159,7 +159,7 @@ layout {
         // off
 
         // How many logical pixels the ring extends out from the windows.
-        width 4
+        width 3
 
         // Colors can be set in a variety of ways:
         // - CSS named colors: "red"
@@ -168,12 +168,13 @@ layout {
 
         // Color of the ring on the active monitor.
         active-color "#7fc8ff"
+        active-gradient from="#7fc8ff" to="#8de4ff" angle=120
 
         // Color of the ring on inactive monitors.
         //
         // The focus ring only draws around the active window, so the only place
         // where you can see its inactive-color is on other monitors.
-        inactive-color "#505050"
+        inactive-color "#3e4651"
 
         // You can also use gradients. They take precedence over solid colors.
         // Gradients are rendered the same as CSS linear-gradient(angle, from, to).
@@ -215,7 +216,7 @@ layout {
     // You can enable drop shadows for windows.
     shadow {
         // Uncomment the next line to enable shadows.
-        // on
+        on
 
         // By default, the shadow draws only around its window, and not behind it.
         // Uncomment this setting to make the shadow draw behind its window.
@@ -237,16 +238,16 @@ layout {
         // pixels and match the CSS box-shadow properties.
 
         // Softness controls the shadow blur radius.
-        softness 30
+        softness 20
 
         // Spread expands the shadow.
-        spread 5
+        spread 2
 
         // Offset moves the shadow relative to the window.
-        offset x=0 y=5
+        offset x=0 y=4
 
         // You can also change the shadow color and opacity.
-        color "#0007"
+        color "#0008"
     }
 
     // Struts shrink the area occupied by windows, similarly to layer-shell panels.
@@ -268,13 +269,16 @@ layout {
 // See the binds section below for more spawn examples.
 
 // This line starts ashell, a commonly used bar for Wayland compositors.
-spawn-at-startup "ashell"
+spawn-at-startup "env" "WGPU_BACKEND=gl" "ashell"
 spawn-at-startup "elephant"
+spawn-at-startup "walker" "--gapplication-service"
+// Wallpaper is handled by external tools, not niri itself.
+// Pick one backend:
+// spawn-at-startup "swaybg" "-m" "fill" "-i" "/usr/share/wallpapers/cachyos-wallpapers/Cachy_Topography.jpg"
+spawn-sh-at-startup "if ! pgrep -x swww-daemon >/dev/null; then swww-daemon & sleep 0.3; fi; swww img /usr/share/wallpapers/cachyos-wallpapers/Cachy_Topography.jpg --transition-type any --transition-duration 1.2"
 // to improve startup performance of walker launcher
-// spawn-at-startup "walker --gapplication-service"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
-spawn-sh-at-startup "walker --gapplication-service"
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
 
 hotkey-overlay {
@@ -287,7 +291,7 @@ hotkey-overlay {
 // Additionally, clients will be informed that they are tiled, removing some client-side rounded corners.
 // This option will also fix border/focus ring drawing behind some semitransparent windows.
 // After enabling or disabling this, you need to restart the apps for this to take effect.
-// prefer-no-csd
+prefer-no-csd
 
 // You can change the path where screenshots are saved.
 // A ~ at the front will be expanded to the home directory.
@@ -349,6 +353,10 @@ window-rule {
     geometry-corner-radius 12
     clip-to-geometry true
 }
+window-rule {
+    geometry-corner-radius 12
+    clip-to-geometry true
+}
 
 binds {
     // Keys consist of modifiers separated by + signs, followed by an XKB key name
@@ -364,10 +372,16 @@ binds {
     // Mod-Shift-/, which is usually the same as Mod-?,
     // shows a list of important hotkeys.
     Mod+Shift+Slash { show-hotkey-overlay; }
+    Mod+Shift+C hotkey-overlay-title="Reload Niri Config" { spawn-sh "niri msg action load-config-file"; }
+    Mod+Shift+B hotkey-overlay-title="Apply Wallpaper: swww" {
+        spawn-sh "if ! pgrep -x swww-daemon >/dev/null; then swww-daemon & sleep 0.3; fi; swww img /usr/share/wallpapers/cachyos-wallpapers/Cachy_Topography.jpg --transition-type any --transition-duration 1.2";
+    }
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
-    Mod+T hotkey-overlay-title="Open a Terminal: alacritty" { spawn "alacritty"; }
+    Mod+T allow-inhibiting=false hotkey-overlay-title="Open a Terminal: wezterm" { spawn "/usr/bin/wezterm-gui" "start" "--always-new-process"; }
+    Mod+Return allow-inhibiting=false hotkey-overlay-title="Open a Terminal: wezterm" { spawn "/usr/bin/wezterm-gui" "start" "--always-new-process"; }
     Mod+D hotkey-overlay-title="Run an Application: walker" { spawn "walker"; }
+    // Mod+Shift+D hotkey-overlay-title="Run an Application: walker" { spawn "walker" "--gapplication-service"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
@@ -541,7 +555,7 @@ binds {
     // Mod+Ctrl+1 { move-window-to-workspace 1; }
 
     // Switches focus between the current and the previous workspace.
-    // Mod+Tab { focus-workspace-previous; }
+    Mod+Tab { focus-workspace-previous; }
 
     // The following binds move the focused window in and out of a column.
     // If the window is alone, they will consume it into the nearby column to the side.

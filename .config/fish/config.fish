@@ -2,6 +2,7 @@ if status is-interactive
     source (starship init fish --print-full-init | psub)
 end
 
+fish_add_path $HOME/.local/bin
 # setup cargo
 fish_add_path $HOME/.cargo/bin
 
@@ -24,17 +25,17 @@ else if command -q hx
     alias helix hx
 end
 
-if test -d "$HOME/gcloud"
+if test -d $HOME/gcloud
     # The next line updates PATH for the Google Cloud SDK.
-    bass source "$HOME/gcloud/google-cloud-sdk/path.bash.inc"
+    bass source $HOME/gcloud/google-cloud-sdk/path.bash.inc
 
     # The next line enables shell command completion for gcloud.
-    bass source "$HOME/gcloud/google-cloud-sdk/completion.bash.inc"
+    bass source $HOME/gcloud/google-cloud-sdk/completion.bash.inc
 end
 
 # bun
-set -gx BUN_INSTALL "$HOME/.bun"
-set -gx PATH "$BUN_INSTALL/bin:$PATH"
+set -gx BUN_INSTALL $HOME/.bun
+set -gx PATH $BUN_INSTALL/bin:$PATH
 
 # pull in the secrets; if they exist
 if test -f ~/.config/fish/.secrets.fish
