@@ -1,20 +1,22 @@
+log_level = "warn"
 position = "Top"
+app_launcher_cmd = "walker"
 
 [modules]
 left = [ [ "appLauncher", "Updates", "Workspaces" ] ]
 center = [ "WindowTitle" ]
 right = [ "SystemInfo", [  "Tray", "Clock", "Privacy", "Settings" ] ]
 
-# [updates]
-# check_cmd = "checkupdates; paru -Qua"
-# update_cmd = 'alacritty -e bash -c "paru; echo Done - Press enter to exit; read" &'
+[updates]
+check_cmd = "checkupdates; paru -Qua"
+update_cmd = 'alacritty -e bash -c "paru; echo Done - Press enter to exit; read" &'
 
 [workspaces]
 enable_workspace_filling = true
 
 [[CustomModule]]
 name = "appLauncher"
-icon = "󱗼 󱗼"
+icon = "󱗼"
 command = "walker"
 
 [window_title]

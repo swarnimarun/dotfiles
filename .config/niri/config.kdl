@@ -270,8 +270,11 @@ layout {
 // This line starts ashell, a commonly used bar for Wayland compositors.
 spawn-at-startup "ashell"
 spawn-at-startup "elephant"
+// to improve startup performance of walker launcher
+// spawn-at-startup "walker --gapplication-service"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
+spawn-sh-at-startup "walker --gapplication-service"
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
 
 hotkey-overlay {

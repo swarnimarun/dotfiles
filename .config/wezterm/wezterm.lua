@@ -43,16 +43,30 @@ local history = wezterm.plugin.require "https://github.com/mikkasendke/sessioniz
 
 local schema = {
     options = { callback = history.Wrapper(sessionizer.DefaultCallback) },
+
     sessionizer.DefaultWorkspace {},
     history.MostRecentWorkspace {},
+
+    {
+        sessionizer.AllActiveWorkspaces {},
+        processing = sessionizer.for_each_entry(function(entry)
+            entry.label = wezterm.format {
+                { Foreground = { Color = "#2277dd" } },
+                { Text = entry.label },
+            }
+        end)
+    },
 
     wezterm.home_dir .. "/repos/github.com/swarnimarun",
     wezterm.home_dir .. "/.config/wezterm",
     wezterm.home_dir .. "/.config/helix",
+    wezterm.home_dir .. "/.config/ashell",
+    wezterm.home_dir .. "/.config/niri",
 
-    sessionizer.FdSearch(wezterm.home_dir .. "/repos/github.com"),
+    sessionizer.FdSearch(wezterm.home_dir .. "/repos"),
 
     processing = sessionizer.for_each_entry(function(entry)
+        entry.label = entry.label:gsub(wezterm.home_dir .. "/repos/github.com", "<github>")
         entry.label = entry.label:gsub(wezterm.home_dir, "~")
     end)
 }
