@@ -8,6 +8,9 @@
 !.config/gitui
 !.config/gitui/keybindings.ron
 
+!.config/gitui
+!.config/gitui/key_bindings.ron
+
 !.config/jj
 !.config/jj/config.toml
 
