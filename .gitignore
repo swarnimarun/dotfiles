@@ -8,6 +8,14 @@
 !.config/gitui
 !.config/gitui/keybindings.ron
 
+!.config/ashell
+
+!.config/niri
+!.config/niri/config.kdl
+
+!.config/ashell
+!.config/ashell/config.toml
+
 !.config/gitui
 !.config/gitui/key_bindings.ron
 
