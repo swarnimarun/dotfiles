@@ -2,8 +2,6 @@
 	name = Swarnim Arun
 	email = swarnimarun11@gmail.com
 	signingkey = 1A0C34AE02141BA4
-[gpg]
-  program = "C:\\Program Files (x86)\\GnuPG\\bin\\gpg.exe"
 [commit]
 	gpgsign = true
 [tag]
