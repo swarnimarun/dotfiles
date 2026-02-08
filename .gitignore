@@ -11,6 +11,10 @@
 !.config/jj
 !.config/jj/config.toml
 
+!.config/nushell
+!.config/nushell/env.nu
+!.config/nushell/config.nu
+
 !.config/helix
 !.config/helix/config.toml
 !.config/helix/languages.toml
