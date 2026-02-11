@@ -6,7 +6,7 @@ name = "Swarnim Arun"
 email = "swarnimarun11@gmail.com"
 
 [ui]
-default-command = "log" # I recommend either st or log as default command
+default-command = ["log", "--stat", "--limit=10"] # I recommend either st or log as default command
 diff-formatter = ":git"
 
 [[--scope]]
