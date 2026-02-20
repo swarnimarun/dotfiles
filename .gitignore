@@ -8,13 +8,20 @@
 !.config/gitui
 !.config/gitui/keybindings.ron
 
-!.config/ashell
-
 !.config/niri
 !.config/niri/config.kdl
 
 !.config/ashell
 !.config/ashell/config.toml
+
+!.config/walker
+!.config/walker/config.toml
+!.config/walker/themes
+!.config/walker/themes/raycast
+!.config/walker/themes/raycast/keybind.xml
+!.config/walker/themes/raycast/preview.xml
+!.config/walker/themes/raycast/layout.xml
+!.config/walker/themes/raycast/style.css
 
 !.config/gitui
 !.config/gitui/key_bindings.ron

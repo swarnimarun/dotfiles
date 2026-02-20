@@ -1,0 +1,14 @@
+theme = "raycast"
+
+force_keyboard_focus = true
+close_when_open = true
+click_to_close = true
+single_click_activation = true
+selection_wrap = true
+exact_search_prefix = "'"
+hide_action_hints = false
+hide_quick_activation = false
+hide_return_action = false
+
+[placeholders]
+"default" = { input = "Type a command or search...", list = "No results" }
