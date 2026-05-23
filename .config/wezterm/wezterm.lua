@@ -14,11 +14,8 @@ local settings = {
     },
     color_scheme = "Dark+",
     preferred_wsl_distributions = {
-        "NixOS",
-        "Ubuntu-24.04",
-        "Ubuntu-22.04",
         "Ubuntu",
-        "Debian",
+        "NixOS",
     },
     workspace_roots = {
         wezterm.home_dir .. "/repos/github.com/swarnimarun",
@@ -67,18 +64,26 @@ local function has_domain(domains, name)
             return true
         end
     end
+
     return false
 end
 
-local function first_available_wsl_domain(domains, preferred_distributions)
-    for _, distribution in ipairs(preferred_distributions) do
+local function filtered_wsl_domains(domains, preferred_distributions)
+    local result = {}
+
+    for _, distribution in ipairs(preferred_distributions or {}) do
         local candidate = "WSL:" .. distribution
         if has_domain(domains, candidate) then
-            return candidate
+            for _, domain in ipairs(domains or {}) do
+                if domain.name == candidate then
+                    table.insert(result, domain)
+                    break
+                end
+            end
         end
     end
 
-    return nil
+    return result
 end
 
 local function platform_font_size()
@@ -135,12 +140,10 @@ local function configure_platform_defaults()
     config.automatically_reload_config = settings.debug.automatically_reload_config
 
     if is_windows then
-        -- On Windows, WSL is usually the primary shell environment.
-        config.wsl_domains = wezterm.default_wsl_domains()
-        config.default_domain = first_available_wsl_domain(config.wsl_domains, settings.preferred_wsl_distributions)
-            or "local"
+        local wsl_domains = wezterm.default_wsl_domains()
+        config.wsl_domains = filtered_wsl_domains(wsl_domains, settings.preferred_wsl_distributions)
+        config.default_domain = "WSL:NixOS"
     else
-        -- On Linux and macOS, local is the safest default.
         config.default_domain = "local"
     end
 end
@@ -228,6 +231,18 @@ tabline.setup({
 tabline.apply_to_config(config)
 
 config.tab_bar_at_bottom = true
+config.launch_menu = {
+    {
+        label = "VS Dev Cmd + Nu",
+        args = {
+            "cmd.exe",
+            "/s",
+            "/c",
+            "C:\\Users\\swarn\\bin\\vsdev-nu.cmd",
+        },
+        domain = { DomainName = "local" },
+    },
+}
 
 config.leader = { key = 'a', mods = 'CTRL', timeout_milliseconds = 1000 }
 config.keys = {
@@ -256,6 +271,14 @@ config.keys = {
         action = wezterm.action.ShowLauncherArgs({ flags = "FUZZY|TABS" }),
     },
     {
+        key = "D",
+        mods = "CTRL|SHIFT",
+        action = wezterm.action.ShowLauncherArgs {
+            flags = "FUZZY|LAUNCH_MENU_ITEMS|DOMAINS",
+            title = "Launcher",
+        },
+    },
+    {
         key = "L",
         mods = "CTRL|SHIFT",
         action = wezterm.action.ShowDebugOverlay,
@@ -268,7 +291,7 @@ config.keys = {
     {
         key = "P",
         mods = "CTRL|SHIFT",
-        action = wezterm.action_callback(update_plugins_and_reload),
+        action = wezterm.action.ActivateCommandPalette,
     },
     {
         key = "H",
