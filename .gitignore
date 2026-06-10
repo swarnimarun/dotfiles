@@ -39,6 +39,10 @@
 !.config/wezterm
 !.config/wezterm/wezterm.lua
 
+!.config/ghostty
+!.config/ghostty/config.ghostty
+!.config/ghostty/README.md
+
 !.gitconfig
 
 !.config/starship.toml

@@ -17,6 +17,7 @@ pager = "delta"
 
 [git]
 private-commits = "description('wip:*') | description('private:*')"
+sign-on-push = true
 
 [templates]
 git_push_bookmark = '"swarnim/pr-" ++ change_id.short()'
@@ -30,7 +31,7 @@ auto-track-bookmarks = "*"
 auto-track-bookmarks = "main | develop | master"
 
 [signing]
-behavior = "own"
+behavior = "drop"
 backend = "gpg"
 key = "1A0C34AE02141BA4"
 

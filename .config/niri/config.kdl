@@ -111,7 +111,7 @@ input {
 // https://yalter.github.io/niri/Configuration:-Layout
 layout {
     // Set gaps around windows in logical pixels.
-    gaps 16
+    gaps 12
 
     // When to center a column when changing focus, options are:
     // - "never", default behavior, focusing an off-screen column will keep at the left
@@ -120,6 +120,8 @@ layout {
     // - "on-overflow", focusing a column will center it if it doesn't fit
     //   together with the previously focused column.
     center-focused-column "on-overflow"
+
+    always-center-single-column
 
     // You can customize the widths that "switch-preset-column-width" (Mod+R) toggles between.
     preset-column-widths {
@@ -135,7 +137,11 @@ layout {
     }
 
     // You can also customize the heights that "switch-preset-window-height" (Mod+Shift+R) toggles between.
-    // preset-window-heights { }
+    preset-window-heights {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+    }
 
     // You can change the default width of the new windows.
     default-column-width { proportion 0.5; }
@@ -168,13 +174,13 @@ layout {
 
         // Color of the ring on the active monitor.
         active-color "#7fc8ff"
-        active-gradient from="#7fc8ff" to="#8de4ff" angle=120
+        active-gradient from="#D7E3FF" to="#9FB3D8" angle=120
 
         // Color of the ring on inactive monitors.
         //
         // The focus ring only draws around the active window, so the only place
         // where you can see its inactive-color is on other monitors.
-        inactive-color "#3e4651"
+        inactive-color "#2A3039"
 
         // You can also use gradients. They take precedence over solid colors.
         // Gradients are rendered the same as CSS linear-gradient(angle, from, to).
@@ -188,8 +194,6 @@ layout {
         // You can also color the gradient relative to the entire view
         // of the workspace, rather than relative to just the window itself.
         // To do that, set relative-to="workspace-view".
-        //
-        inactive-gradient from="#505050" to="#808080" angle=45 relative-to="workspace-view"
     }
 
     // You can also add a border. It's similar to the focus ring, but always visible.
@@ -197,20 +201,6 @@ layout {
         // The settings are the same as for the focus ring.
         // If you enable the border, you probably want to disable the focus ring.
         off
-
-        width 4
-        active-color "#ffc87f"
-        inactive-color "#505050"
-
-        // Color of the border around windows that request your attention.
-        urgent-color "#9b0000"
-
-        // Gradients can use a few different interpolation color spaces.
-        // For example, this is a pastel rainbow gradient via in="oklch longer hue".
-        //
-        // active-gradient from="#e5989b" to="#ffb4a2" angle=45 relative-to="workspace-view" in="oklch longer hue"
-
-        // inactive-gradient from="#505050" to="#808080" angle=45 relative-to="workspace-view"
     }
 
     // You can enable drop shadows for windows.
@@ -238,16 +228,37 @@ layout {
         // pixels and match the CSS box-shadow properties.
 
         // Softness controls the shadow blur radius.
-        softness 20
+        softness 24
 
         // Spread expands the shadow.
-        spread 2
+        spread -1
 
         // Offset moves the shadow relative to the window.
-        offset x=0 y=4
+        offset x=0 y=5
 
         // You can also change the shadow color and opacity.
-        color "#0008"
+        color "#00000066"
+        inactive-color "#00000033"
+    }
+
+    tab-indicator {
+        on
+        hide-when-single-tab
+        place-within-column
+        gap 6
+        width 3
+        length total-proportion=1.0
+        position "right"
+        gaps-between-tabs 2
+        corner-radius 6
+        active-color "#D7E3FF"
+        inactive-color "#3A4250"
+        urgent-color "#FF7A90"
+    }
+
+    insert-hint {
+        on
+        color "#D7E3FF66"
     }
 
     // Struts shrink the area occupied by windows, similarly to layer-shell panels.
@@ -270,12 +281,13 @@ layout {
 
 // This line starts ashell, a commonly used bar for Wayland compositors.
 spawn-at-startup "env" "WGPU_BACKEND=gl" "ashell"
-spawn-at-startup "elephant"
-spawn-at-startup "walker" "--gapplication-service"
+// spawn-at-startup "vicinae" "server"
+// spawn-at-startup "walker" "--gapplication-service"
 // Wallpaper is handled by external tools, not niri itself.
 // Pick one backend:
 // spawn-at-startup "swaybg" "-m" "fill" "-i" "/usr/share/wallpapers/cachyos-wallpapers/Cachy_Topography.jpg"
-spawn-sh-at-startup "if ! pgrep -x swww-daemon >/dev/null; then swww-daemon & sleep 0.3; fi; swww img /usr/share/wallpapers/cachyos-wallpapers/Cachy_Topography.jpg --transition-type any --transition-duration 1.2"
+spawn-at-startup "awww-daemon"
+spawn-sh-at-startup "sleep 0.5; awww img /home/swarnim/Pictures/Wallpapers/tanjiro-kamado-red-5120x2880-22577.png --transition-type any --transition-duration 1.2"
 // to improve startup performance of walker launcher
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
@@ -305,11 +317,62 @@ screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 // The wiki explains how to configure individual animations:
 // https://yalter.github.io/niri/Configuration:-Animations
 animations {
-    // Uncomment to turn off all animations.
-    // off
+    // Keep some motion, but make transitions smoother and less abrupt.
+    slowdown 1.15
 
-    // Slow down all animations by this factor. Values below 1 speed them up instead.
-    slowdown 0.4
+    window-open {
+        duration-ms 130
+        curve "ease-out-expo"
+    }
+
+    window-close {
+        duration-ms 110
+        curve "ease-out-quad"
+    }
+
+    horizontal-view-movement {
+        spring damping-ratio=1.0 stiffness=900 epsilon=0.0001
+    }
+
+    window-movement {
+        spring damping-ratio=1.0 stiffness=850 epsilon=0.0001
+    }
+
+    window-resize {
+        spring damping-ratio=1.0 stiffness=850 epsilon=0.0001
+    }
+
+    overview-open-close {
+        spring damping-ratio=1.0 stiffness=900 epsilon=0.0001
+    }
+
+    recent-windows-close {
+        spring damping-ratio=1.0 stiffness=900 epsilon=0.001
+    }
+}
+
+recent-windows {
+    debounce-ms 450
+    open-delay-ms 90
+
+    highlight {
+        active-color "#D7E3FF22"
+        urgent-color "#FF7A9033"
+        padding 20
+        corner-radius 18
+    }
+
+    previews {
+        max-height 420
+        max-scale 0.45
+    }
+
+    binds {
+        Alt+Tab { next-window; }
+        Alt+Shift+Tab { previous-window; }
+        Alt+grave { next-window filter="app-id"; }
+        Alt+Shift+grave { previous-window filter="app-id"; }
+    }
 }
 
 // Window rules let you adjust behavior for individual windows.
@@ -373,16 +436,17 @@ binds {
     // shows a list of important hotkeys.
     Mod+Shift+Slash { show-hotkey-overlay; }
     Mod+Shift+C hotkey-overlay-title="Reload Niri Config" { spawn-sh "niri msg action load-config-file"; }
-    Mod+Shift+B hotkey-overlay-title="Apply Wallpaper: swww" {
-        spawn-sh "if ! pgrep -x swww-daemon >/dev/null; then swww-daemon & sleep 0.3; fi; swww img /usr/share/wallpapers/cachyos-wallpapers/Cachy_Topography.jpg --transition-type any --transition-duration 1.2";
+    Mod+Shift+B hotkey-overlay-title="Apply Wallpaper: awww" {
+        spawn-sh "awww img /usr/share/wallpapers/cachyos-wallpapers/Cachy_Topography.jpg --transition-type any --transition-duration 1.2";
     }
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
-    Mod+T allow-inhibiting=false hotkey-overlay-title="Open a Terminal: wezterm" { spawn "/usr/bin/wezterm-gui" "start" "--always-new-process"; }
-    Mod+Return allow-inhibiting=false hotkey-overlay-title="Open a Terminal: wezterm" { spawn "/usr/bin/wezterm-gui" "start" "--always-new-process"; }
-    Mod+D hotkey-overlay-title="Run an Application: walker" { spawn "walker"; }
+    Mod+T allow-inhibiting=false hotkey-overlay-title="Open a Terminal: wezterm" { spawn "/usr/bin/wezterm" "start" "--always-new-process"; }
+    Mod+Return allow-inhibiting=false hotkey-overlay-title="Open a Terminal: wezterm" { spawn "/usr/bin/wezterm" "start" "--always-new-process"; }
+    Mod+D hotkey-overlay-title="Run an Application: vicinae" { spawn "vicinae" "open"; }
     // Mod+Shift+D hotkey-overlay-title="Run an Application: walker" { spawn "walker" "--gapplication-service"; }
-    Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
+    Super+Alt+L hotkey-overlay-title="Lock the Screen: hyprlock" { spawn "hyprlock"; }
+    Mod+Shift+Space hotkey-overlay-title="Toggle top bar" { spawn "ashell" "msg" "toggle-visibility"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
@@ -393,10 +457,10 @@ binds {
     // The allow-when-locked=true property makes them work even when the session is locked.
     // Using spawn-sh allows to pass multiple arguments together with the command.
     // "-l 1.0" limits the volume to 100%.
-    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+ -l 1.0"; }
-    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
-    XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
-    XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "ashell" "msg" "volume-up"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "ashell" "msg" "volume-down"; }
+    XF86AudioMute        allow-when-locked=true { spawn "ashell" "msg" "volume-toggle-mute"; }
+    XF86AudioMicMute     allow-when-locked=true { spawn "ashell" "msg" "microphone-toggle-mute"; }
 
     // Example media keys mapping using playerctl.
     // This will work with any MPRIS-enabled media player.
@@ -408,8 +472,8 @@ binds {
     // Example brightness key mappings for brightnessctl.
     // You can use regular spawn with multiple arguments too (to avoid going through "sh"),
     // but you need to manually put each argument in separate "" quotes.
-    XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+10%"; }
-    XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "10%-"; }
+    XF86MonBrightnessUp allow-when-locked=true { spawn "ashell" "msg" "brightness-up"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "ashell" "msg" "brightness-down"; }
 
     // Open/close the Overview: a zoomed-out view of workspaces and windows.
     // You can also move the mouse into the top-left hot corner,
@@ -603,6 +667,7 @@ binds {
     // Move the focused window between the floating and the tiling layout.
     Mod+V       { toggle-window-floating; }
     Mod+Shift+V { switch-focus-between-floating-and-tiling; }
+    Mod+Alt+F   { toggle-window-floating; }
 
     // Toggle tabbed column display mode.
     // Windows in this column will appear as vertical tabs,
@@ -618,6 +683,7 @@ binds {
     // Mod+Shift+Space { switch-layout "prev"; }
 
     Print { screenshot; }
+    Mod+Shift+S hotkey-overlay-title="Take a Screenshot" { screenshot; }
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window; }
 

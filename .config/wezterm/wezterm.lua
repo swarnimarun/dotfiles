@@ -7,8 +7,8 @@ config.window_decorations = "RESIZE"
 -- should be around 10 on windows 1440p
 -- config.font_size = 10.0
 -- should be around 12 on macos
--- config.window_background_opacity = 0.95
--- config.text_background_opacity = 0.53
+config.window_background_opacity = 0.80
+config.text_background_opacity = 0.50
 
 config.font_size = 12.0
 config.font = wezterm.font_with_fallback({
@@ -66,7 +66,11 @@ local schema = {
     wezterm.home_dir .. "/.config/ashell",
     wezterm.home_dir .. "/.config/niri",
 
-    sessionizer.FdSearch(wezterm.home_dir .. "/repos"),
+    -- fd respects ~/.gitignore by default, and my home ignore file ignores everything.
+    sessionizer.FdSearch {
+        wezterm.home_dir .. "/repos/",
+        extra_args = { "-I" },
+    },
 
     processing = sessionizer.for_each_entry(function(entry)
         entry.label = entry.label:gsub(wezterm.home_dir .. "/repos/github.com", "<github>")
@@ -111,6 +115,13 @@ tabline.setup({
   extensions = {},
 })
 tabline.apply_to_config(config)
+
+config.window_padding = {
+    left = 6,
+    right = 6,
+    top = 5,
+    bottom = 5,
+}
 
 config.tab_bar_at_bottom = true
 

@@ -3,7 +3,7 @@
 	email = swarnimarun11@gmail.com
 	signingkey = 1A0C34AE02141BA4
 [commit]
-	gpgsign = true
+	gpgsign = false
 [tag]
 	gpgSign = true
 [core]

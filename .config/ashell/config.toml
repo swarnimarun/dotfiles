@@ -1,84 +1,139 @@
 log_level = "warn"
 position = "Top"
+layer = "Top"
 enable_esc_key = true
+outputs = "All"
 
 [modules]
-left = [ "Workspaces" ]
+left = [ [ "AppLauncher", "Workspaces" ] ]
 center = [ "WindowTitle" ]
-right = [ [ "Tray", "WifiShort", "VolumePercent", "DateTime", "Settings" ] ]
+right = [ "MediaPlayer", [ "Tray", "Privacy", "Notifications", "Tempo", "Settings" ] ]
 
 [workspaces]
 enable_workspace_filling = true
 visibility_mode = "MonitorSpecific"
+group_by_monitor = true
+max_workspaces = 6
+disable_special_workspaces = true
+workspace_names = [ "1", "2", "3", "4", "5", "6" ]
 
 [window_title]
-truncate_title_after_length = 90
+truncate_title_after_length = 72
+mode = "Title"
 
-[clock]
-format = "%a %b %d %R"
+[[CustomModule]]
+name = "AppLauncher"
+type = "Button"
+icon = "󱗼"
+command = "vicinae open"
+
+[tempo]
+clock_format = "%a %d %b %R"
+formats = [
+  "%a %d %b %R",
+  "%H:%M:%S",
+  "%Y-%m-%d",
+]
+timezones = [ "Asia/Kolkata", "UTC", "America/Los_Angeles" ]
+weather_location = { City = "Lucknow" }
+weather_indicator = "None"
+
+[media_player]
+max_title_length = 42
+indicator_format = "Icon"
+
+[notifications]
+format = "%H:%M"
+show_timestamps = true
+show_bodies = false
+grouped = true
+toast = true
+toast_position = "top_right"
+toast_timeout = 3500
+toast_limit = 3
+toast_max_height = 130
+blocklist = [ "^blueman$", "^nm-connection-editor$" ]
+
+[updates]
+check_cmd = 'bash -lc "checkupdates 2>/dev/null || true; if command -v paru >/dev/null; then paru -Qua; elif command -v yay >/dev/null; then yay -Qua; fi"'
+update_cmd = 'wezterm-gui start --always-new-process -- bash -lc "if command -v paru >/dev/null; then paru -Syu; elif command -v yay >/dev/null; then yay -Syu; else sudo pacman -Syu; fi; echo; read -n 1 -s -r -p \"Done - press any key\""'
+interval = 3600
 
 [settings]
 lock_cmd = "hyprlock &"
 audio_sinks_more_cmd = "pavucontrol -t 3"
 audio_sources_more_cmd = "pavucontrol -t 4"
-wifi_more_cmd = 'if command -v nm-connection-editor >/dev/null 2>&1; then nm-connection-editor; elif command -v nmtui >/dev/null 2>&1; then alacritty -e nmtui; fi'
-vpn_more_cmd = 'if command -v nm-connection-editor >/dev/null 2>&1; then nm-connection-editor; elif command -v nmtui >/dev/null 2>&1; then alacritty -e nmtui; fi'
-bluetooth_more_cmd = "blueberry"
+wifi_more_cmd = 'if command -v nm-connection-editor >/dev/null 2>&1; then nm-connection-editor; elif command -v nmtui >/dev/null 2>&1; then wezterm-gui start -- nmtui; fi'
+vpn_more_cmd = 'if command -v nm-connection-editor >/dev/null 2>&1; then nm-connection-editor; elif command -v nmtui >/dev/null 2>&1; then wezterm-gui start -- nmtui; fi'
+bluetooth_more_cmd = 'if command -v blueman-manager >/dev/null 2>&1; then blueman-manager; elif command -v blueberry >/dev/null 2>&1; then blueberry; fi'
+shutdown_cmd = "systemctl poweroff"
+suspend_cmd = "systemctl suspend"
+hibernate_cmd = ""
+reboot_cmd = "systemctl reboot"
+logout_cmd = "niri msg action quit"
 remove_airplane_btn = true
 remove_idle_btn = true
-indicators = [ "Audio", "Bluetooth", "Battery", "Vpn" ]
+indicators = [
+  "Battery",
+  "Network",
+  "Bluetooth",
+  "Audio",
+  "Microphone",
+  "PowerProfile",
+  "Vpn",
+  "Brightness",
+]
 
-[[CustomModule]]
-name = "VolumePercent"
+[[settings.CustomButton]]
+name = "Activity"
+icon = "󰾆"
+command = "wezterm-gui start -- btop"
+tooltip = "Open btop"
+
+[[settings.CustomButton]]
+name = "Mixer"
 icon = "󰕾"
-command = "pavucontrol -t 3"
-listen_cmd = "bash /home/swarnim/.config/ashell/scripts/volume-listen.sh"
-icons.'^muted$' = "󰝟"
-icons.'^low$' = "󰕿"
-icons.'^mid$' = "󰖀"
-icons.'^high$' = "󰕾"
-
-[[CustomModule]]
-name = "WifiShort"
-icon = "󰖩"
-command = 'if command -v nm-connection-editor >/dev/null 2>&1; then nm-connection-editor; elif command -v nmtui >/dev/null 2>&1; then alacritty -e nmtui; fi'
-listen_cmd = "bash /home/swarnim/.config/ashell/scripts/wifi-short-listen.sh"
-icons.'^wifi$' = "󰖩"
-icons.'^wired$' = "󰈀"
-icons.'^offline$' = "󰖪"
-
-[[CustomModule]]
-name = "DateTime"
-icon = " "
-command = 'if command -v zenity >/dev/null 2>&1; then zenity --calendar --title="Calendar"; elif command -v gsimplecal >/dev/null 2>&1; then gsimplecal; else alacritty -e bash -lc "cal -3; echo; date; read -n 1 -s -r -p \"Press any key to close\""; fi'
-listen_cmd = "bash /home/swarnim/.config/ashell/scripts/datetime-listen.sh"
+command = "pavucontrol"
+tooltip = "Open audio mixer"
 
 [appearance]
-style = "Solid"
-opacity = 0.94
-scale_factor = 1.08
-success_color = "#8ad493"
-text_color = "#d8dce3"
-workspace_colors = [ "#7fb2ff", "#8ad493", "#9dc0ff" ]
-special_workspace_colors = [ "#7fb2ff", "#8ad493", "#9dc0ff" ]
+style = "Islands"
+opacity = 1.0
+scale_factor = 1.0
+font_name = "Noto Sans"
+success_color = "#9AD7A0"
+warning_color = "#E6C177"
+text_color = "#D7DEE8"
+workspace_colors = [ "#D7E3FF" ]
+special_workspace_colors = [ "#D7E3FF" ]
 
 [appearance.primary_color]
-base = "#7fb2ff"
-text = "#0e1116"
+base = "#D7E3FF"
+weak = "#9FB3D8"
+strong = "#F1F6FF"
+text = "#090B0F"
 
 [appearance.danger_color]
-base = "#ff6f7d"
-weak = "#ffc36f"
+base = "#FF7A90"
+weak = "#FFB4A2"
+strong = "#FF5F7C"
+text = "#13070A"
 
 [appearance.background_color]
-base = "#101317"
-weak = "#1a1f25"
-strong = "#252c35"
+base = "#0B0D10"
+weakest = "#080A0D"
+weaker = "#0D1014"
+weak = "#141820"
+neutral = "#1A2028"
+strong = "#242B35"
+stronger = "#303846"
+strongest = "#3D4757"
+text = "#D7DEE8"
 
 [appearance.secondary_color]
-base = "#0a0d11"
-strong = "#151b22"
+base = "#11151B"
+strong = "#1B222B"
 
 [appearance.menu]
-opacity = 0.96
-backdrop = 0.35
+opacity = 0.94
+backdrop = 0.42
