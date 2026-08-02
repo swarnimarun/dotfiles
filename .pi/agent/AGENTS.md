@@ -39,28 +39,14 @@ try luna first — do not silently substitute the fallback.
 - Same constraints as subagent research: read-only; never write to the repo (artifacts only
   under `.pi-subagents/`); cite source URLs in reports; never put credentials in URLs.
 
-## Pi extensions
-
-This environment relies on the following pi packages/extensions. Before relying on one, verify it
-is installed (`pi list`, or `~/.pi/agent/settings.json` → `packages`; custom extensions live in
-`~/.pi/agent/extensions/`). If any is missing, ask the user to install it — do not install pi
-packages yourself.
-
-- `pi-web-search` (npm) — provider-native web search for pi (Google Gemini, OpenAI, Anthropic)
-- `pi-zenmux` (local: `~/repos/github.com/swarnimarun/pi-zenmux`) — ZenMux provider extension
-- `pi-subagents` (npm) — subagent delegation: chains, parallel execution, TUI clarification
-- `rpiv-todo` (npm) — model todo list rendered as a live overlay
-- `pi-permission-system` (npm) — shell-command permission enforcement
-- `ai-init` (custom: `~/.pi/agent/extensions/ai-init.ts`) — interactive ask/init dialogs
-
 ## Generating a project's initial AGENTS.md
 
 When a project has no AGENTS.md (new or existing repo), generate it with the **ai-init** skill:
 
 - Run the skill: `pi /skill:ai-init` or just ask the agent to "initialize the project / generate the AGENTS.md".
 - The skill flow: inspect the repository (never guess what files already decide) → ask the user
-  interactive questions with the `ask` tool (select/confirm/input dialogs from the `ai-init`
-  extension, using the harness UI hooks) → optionally research the stack with `web-researcher`
+  interactive questions with the `ask` tool (select/confirm/input dialogs) → optionally research
+  the stack with `web-researcher`
   (`openai-codex/gpt-5.6-luna`, high thinking) → write AGENTS.md from the skill's template and
   the generalized structure reference → optionally scaffold the project (`cargo init`, `justfile`,
   `.gitignore`) when the user confirms.
