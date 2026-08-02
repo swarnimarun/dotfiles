@@ -24,3 +24,19 @@
 !.config/zed/
 !.config/zed/settings.json
 !README.md
+
+# pi agent config (auth.json, sessions/, npm/, logs stay ignored)
+!.pi/
+!.pi/agent/
+!.pi/agent/AGENTS.md
+!.pi/agent/agents/
+!.pi/agent/agents/**
+!.pi/agent/extensions/
+!.pi/agent/extensions/ai-init.ts
+!.pi/agent/extensions/pi-permission-system/
+!.pi/agent/extensions/pi-permission-system/config.json
+!.pi/agent/settings.json
+!.pi/agent/skills/
+!.pi/agent/skills/**
+!.pi/agent/prompts/
+!.pi/agent/prompts/**

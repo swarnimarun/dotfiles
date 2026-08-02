@@ -1,0 +1,29 @@
+{
+  "lastChangelogVersion": "0.83.0",
+  "defaultProvider": "opencode-go",
+  "defaultModel": "deepseek-v4-flash",
+  "defaultThinkingLevel": "max",
+  "theme": "dark",
+  "enabledModels": [
+    "openai-codex/gpt-5.6-sol",
+    "openai-codex/gpt-5.6-terra",
+    "openai-codex/gpt-5.6-luna",
+    "opencode-go/deepseek-v4-flash",
+    "opencode-go/kimi-k3",
+    "opencode-go/glm-5.2",
+    "zenmux/inclusionai/ling-3.0-flash",
+    "zenmux/deepseek/deepseek-v4-flash",
+    "zenmux/qwen/qwen3.7-flash"
+  ],
+  "packages": [
+    "npm:pi-web-search",
+    "../../repos/github.com/swarnimarun/pi-zenmux",
+    "npm:pi-subagents",
+    "npm:@juicesharp/rpiv-todo",
+    "npm:@gotgenes/pi-permission-system"
+  ],
+  "hideThinkingBlock": false,
+  "subagents": {
+    "defaultModel": "opencode-go/deepseek-v4-flash"
+  }
+}
