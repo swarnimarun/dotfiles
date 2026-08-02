@@ -41,80 +41,99 @@ config.mouse_bindings = {
   },
 }
 
-local sessionizer = wezterm.plugin.require "https://github.com/mikkasendke/sessionizer.wezterm"
-local history = wezterm.plugin.require "https://github.com/mikkasendke/sessionizer-history"
+-- local sessionizer = wezterm.plugin.require "https://github.com/mikkasendke/sessionizer.wezterm"
+-- local history = wezterm.plugin.require "https://github.com/mikkasendke/sessionizer-history"
 
-local schema = {
-    options = { callback = history.Wrapper(sessionizer.DefaultCallback) },
+-- local schema = {
+--     options = { callback = history.Wrapper(sessionizer.DefaultCallback) },
 
-    sessionizer.DefaultWorkspace {},
-    history.MostRecentWorkspace {},
+--     sessionizer.DefaultWorkspace {},
+--     history.MostRecentWorkspace {},
 
-    {
-        sessionizer.AllActiveWorkspaces {},
-        processing = sessionizer.for_each_entry(function(entry)
-            entry.label = wezterm.format {
-                { Foreground = { Color = "#2277dd" } },
-                { Text = entry.label },
-            }
-        end)
-    },
+--     {
+--         sessionizer.AllActiveWorkspaces {},
+--         processing = sessionizer.for_each_entry(function(entry)
+--             entry.label = wezterm.format {
+--                 { Foreground = { Color = "#2277dd" } },
+--                 { Text = entry.label },
+--             }
+--         end)
+--     },
 
-    wezterm.home_dir .. "/repos/github.com/swarnimarun",
-    wezterm.home_dir .. "/.config/wezterm",
-    wezterm.home_dir .. "/.config/helix",
-    wezterm.home_dir .. "/.config/ashell",
-    wezterm.home_dir .. "/.config/niri",
+--     wezterm.home_dir .. "/repos/github.com/swarnimarun",
+--     wezterm.home_dir .. "/.config/wezterm",
+--     wezterm.home_dir .. "/.config/helix",
+--     wezterm.home_dir .. "/.config/ashell",
+--     wezterm.home_dir .. "/.config/niri",
 
-    sessionizer.FdSearch(wezterm.home_dir .. "/repos"),
+--     sessionizer.FdSearch(wezterm.home_dir .. "/repos"),
 
-    processing = sessionizer.for_each_entry(function(entry)
-        entry.label = entry.label:gsub(wezterm.home_dir .. "/repos/github.com", "<github>")
-        entry.label = entry.label:gsub(wezterm.home_dir, "~")
-    end)
-}
+--     processing = sessionizer.for_each_entry(function(entry)
+--         entry.label = entry.label:gsub(wezterm.home_dir .. "/repos/github.com", "<github>")
+--         entry.label = entry.label:gsub(wezterm.home_dir, "~")
+--     end)
+-- }
 
-local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
-tabline.setup({
-  options = {
-    icons_enabled = true,
-    theme = 'GruvboxDark',
-    tabs_enabled = true,
-    theme_overrides = {},
-    section_separators = {
-      left = wezterm.nerdfonts.pl_left_hard_divider,
-      right = wezterm.nerdfonts.pl_right_hard_divider,
-    },
-    component_separators = {
-      left = wezterm.nerdfonts.pl_left_soft_divider,
-      right = wezterm.nerdfonts.pl_right_soft_divider,
-    },
-    tab_separators = {
-      left = wezterm.nerdfonts.pl_left_hard_divider,
-      right = wezterm.nerdfonts.pl_right_hard_divider,
-    },
-  },
-  sections = {
-    tabline_a = { 'mode' },
-    tabline_b = { 'workspace' },
-    tabline_c = { '' },
-    tab_active = {
-        { 'process' },
-    },
-    tab_inactive = {
-        { 'process' }
-    },
-    tabline_x = { 'ram', 'cpu' },
-    tabline_y = { '' },
-    tabline_z = { 'datetime', 'battery' },
-  },
-  extensions = {},
-})
-tabline.apply_to_config(config)
+-- local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
+-- tabline.setup({
+--   options = {
+--     icons_enabled = true,
+--     theme = 'GruvboxDark',
+--     tabs_enabled = true,
+--     theme_overrides = {},
+--     section_separators = {
+--       left = wezterm.nerdfonts.pl_left_hard_divider,
+--       right = wezterm.nerdfonts.pl_right_hard_divider,
+--     },
+--     component_separators = {
+--       left = wezterm.nerdfonts.pl_left_soft_divider,
+--       right = wezterm.nerdfonts.pl_right_soft_divider,
+--     },
+--     tab_separators = {
+--       left = wezterm.nerdfonts.pl_left_hard_divider,
+--       right = wezterm.nerdfonts.pl_right_hard_divider,
+--     },
+--   },
+--   sections = {
+--     tabline_a = { 'mode' },
+--     tabline_b = { 'workspace' },
+--     tabline_c = { '' },
+--     tab_active = {
+--         { 'process' },
+--     },
+--     tab_inactive = {
+--         { 'process' }
+--     },
+--     tabline_x = { 'ram', 'cpu' },
+--     tabline_y = { '' },
+--     tabline_z = { 'datetime', 'battery' },
+--   },
+--   extensions = {},
+-- })
+-- tabline.apply_to_config(config)
 
 config.tab_bar_at_bottom = true
-
+-- config.leader = { key = 'a', mods = 'CTRL', timeout_milliseconds = 1000 }
 config.keys = {
+    { key = 'P', mods = 'CTRL', action = wezterm.action.ActivateCommandPalette },
+    -- Leader + d: fuzzy switch/connect to domains
+    {
+      key = 'l',
+      mods = 'CTRL|SHIFT',
+      action = act.ShowLauncherArgs {
+        flags = 'FUZZY|DOMAINS',
+        title = 'Switch/attach domain',
+      },
+    },
+    -- -- Leader + l: general fuzzy launcher: tabs, domains, workspaces, commands
+    -- {
+    --   key = 'L',
+    --   mods = 'CTRL|SHIFT',
+    --   action = act.ShowLauncherArgs {
+    --     flags = 'FUZZY|TABS|DOMAINS|WORKSPACES|COMMANDS',
+    --     title = 'WezTerm launcher',
+    --   },
+    -- },
     { key = "Q", mods = "CTRL|SHIFT", action = wezterm.action.ActivateCopyMode },
     -- sessionizer
     {

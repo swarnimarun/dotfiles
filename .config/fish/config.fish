@@ -2,7 +2,10 @@ if status is-interactive
     source (starship init fish --print-full-init | psub)
 end
 
-fish_add_path $HOME/.local/bin
+if test -d $HOME/.local/bin
+    fish_add_path $HOME/.local/bin
+end
+
 # setup cargo
 fish_add_path $HOME/.cargo/bin
 
@@ -11,9 +14,12 @@ if test -d /opt/homebrew
     set -gx DOTNET_ROOT /opt/homebrew/opt/dotnet/libexec
 end
 
-set -gx PNPM_HOME $HOME/Library/pnpm
+if test -d $HOME/Library/pnpm
+    set -gx PNPM_HOME $HOME/Library/pnpm
+    fish_add_path $PNPM_HOME
+end
+
 set -gx GPG_TTY (tty)
-fish_add_path $PNPM_HOME
 
 if test -f /usr/lib/helix/hx
     set -gx EDITOR helix
@@ -41,3 +47,10 @@ set -gx PATH $BUN_INSTALL/bin:$PATH
 if test -f ~/.config/fish/.secrets.fish
     source ~/.config/fish/.secrets.fish
 end
+
+# pnpm
+set -gx PNPM_HOME "/home/swarnim/.local/share/pnpm"
+if not string match -q -- $PNPM_HOME $PATH
+    set -gx PATH "$PNPM_HOME" $PATH
+end
+# pnpm end
