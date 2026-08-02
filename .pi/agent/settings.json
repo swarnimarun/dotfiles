@@ -1,0 +1,23 @@
+{
+  "lastChangelogVersion": "0.83.0",
+  "defaultProvider": "opencode-go",
+  "defaultModel": "deepseek-v4-flash",
+  "defaultThinkingLevel": "max",
+  "theme": "dark",
+  "enabledModels": [
+    "opencode-go/deepseek-v4-flash",
+    "opencode-go/kimi-k3",
+    "opencode-go/glm-5.2"
+  ],
+  "packages": [
+    "npm:pi-web-search",
+    "git:github.com/swarnimarun/pi-zenmux",
+    "npm:pi-subagents",
+    "npm:@juicesharp/rpiv-todo",
+    "npm:@gotgenes/pi-permission-system"
+  ],
+  "hideThinkingBlock": false,
+  "subagents": {
+    "defaultModel": "opencode-go/deepseek-v4-flash"
+  }
+}
