@@ -7,6 +7,7 @@ email = "swarnimarun11@gmail.com"
 
 [ui]
 default-command = ["log", "--stat", "--limit=10"] # I recommend either st or log as default command
+diff-format = "git"
 diff-formatter = ":git"
 
 [[--scope]]
@@ -16,7 +17,9 @@ diff-formatter = ":git"
 pager = "delta"
 
 [git]
+subprocess = true
 private-commits = "description('wip:*') | description('private:*')"
+sign-on-push = true
 
 [templates]
 git_push_bookmark = '"swarnim/pr-" ++ change_id.short()'
@@ -30,7 +33,7 @@ auto-track-bookmarks = "*"
 auto-track-bookmarks = "main | develop | master"
 
 [signing]
-behavior = "own"
+behavior = "drop"
 backend = "gpg"
 key = "1A0C34AE02141BA4"
 
