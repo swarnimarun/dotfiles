@@ -1,0 +1,15 @@
+# comx language support (see /Users/swarnim/repos/github.com/swarnimarun/comx)
+# The LSP server binary is `comx-lsp` (installed via
+# `cargo install --path crates/comx-lsp` in the comx repo).
+
+[language-server.comx-lsp]
+command = "comx-lsp"
+
+[[language]]
+name = "comx"
+scope = "source.comx"
+injection-regex = "comx"
+file-types = ["cmx"]
+comment-tokens = ["//"]
+indent = { tab-width = 4, unit = "    " }
+language-servers = ["comx-lsp"]
