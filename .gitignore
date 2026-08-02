@@ -1,4 +1,7 @@
+# Ignore everything
 *
+
+# Track specific files
 !.gitignore
 !.gitconfig
 !.cargo/
@@ -20,3 +23,4 @@
 !.config/wezterm/wezterm.lua
 !.config/zed/
 !.config/zed/settings.json
+!README.md

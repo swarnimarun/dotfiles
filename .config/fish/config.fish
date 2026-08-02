@@ -11,6 +11,7 @@ if status is-interactive
     fish_add_path $HOMEBREW_PATH/opt/openjdk/bin
     fish_add_path $HOME/.cargo/bin
     fish_add_path $HOME/.dotnet/tools
+    set -gx DOTNET_ROOT $HOMEBREW_PATH/opt/dotnet/libexec
     fish_add_path $PNPM_HOME
     fish_add_path $PNPM_HOME
 
@@ -28,5 +29,12 @@ if status is-interactive
     # The next line enables shell command completion for gcloud.
     bass source '$HOME/gcloud/completion.bash.inc'
 
-    source $HOME/.config/fish/.secrets.fish
+    # bun
+    set -gx BUN_INSTALL "$HOME/.bun"
+    set -gx PATH "$BUN_INSTALL/bin:$PATH"
+
+    # pull in the secrets; if they exist
+    if test -f ~/.config/fish/.secrets.fish
+        source ~/.config/fish/.secrets.fish
+    end
 end

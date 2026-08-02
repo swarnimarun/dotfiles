@@ -1,27 +1,47 @@
+# <<<<<<< conflict 1 of 1
+# %%%%%%% diff from: zzzzzzzz 00000000
+# \\\\\\\        to: tsoywqxp 5c01d37b
+# +[user]
+# +name = "Swarnim Arun"
+# +email = "swarnimarun11@gmail.com"
+# +
+# +# [diff]
+# +# tool = "delta -s --dark"
+# +
+# +
+# +# These options allow for `jj diff` and `jj show` to clear the output from the terminal after closing the pager.
+# +[[--scope]]
+# +--when.commands = ["diff", "show"]
+# +
+# +[--scope.ui]
+# +pager = "delta"
+# +
+# +++++++ pnlpmnxv 29e4f048 "chore: handle default command jj log better"
+#:tombi schema.strict = true
+#:schema https://jj-vcs.github.io/jj/latest/config-schema.json
+
 [user]
 name = "Swarnim Arun"
 email = "swarnimarun11@gmail.com"
 
-# [diff]
-# tool = "delta -s --dark"
-
 [ui]
-default-command = ["log", "--limit=10"] # I recommend either st or log as default command
+default-command = ["log", "--stat", "--limit=10"] # I recommend either st or log as default command
 diff-format = "git"
 diff-formatter = ":git"
 # conflict-marker-style = "git"
 # diff-formatter = ":git" # required by `delta`
 # pager=["delta", "--line-numbers", "--dark", "-s", "--pager", "less -FRX"] # Keeps output from the terminal after closing the pager
 
-# These options allow for `jj diff` and `jj show` to clear the output from the terminal after closing the pager.
 [[--scope]]
 --when.commands = ["diff", "show"]
 
 [--scope.ui]
 pager = "delta"
 
+
 [git]
 subprocess = true
+private-commits = "description('wip:*') | description('private:*')"
 sign-on-push = true
 
 [signing]
@@ -29,5 +49,100 @@ behavior = "drop"
 backend = "gpg"
 key = "1A0C34AE02141BA4"
 
+[templates]
+git_push_bookmark = '"swarnim/pr-" ++ change_id.short()'
+
+# track all origin bookmarks
 [remotes.origin]
 auto-track-bookmarks = "*"
+
+# for forks only track main of the upstream
+[remotes.upstream]
+auto-track-bookmarks = "main | develop | master"
+
+[aliases]
+# --------------------
+# Status / log
+# --------------------
+graph = ["log", "--stat", "-r", "::@"]
+last = ["log", "-r", "@", "--limit", "1"]
+what = ["log", "-r", "::@", "--summary"]
+
+# --------------------
+# Workflow (add/commit equivalents)
+# --------------------
+ft = ["file", "track"]
+
+# --------------------
+# Create bookmark (branches in git)
+# --------------------
+bc = ["bookmark", "create"]
+bt = ["bookmark", "track", "--remote", "origin"]
+
+# Recently updated branches
+recent = [
+  "bookmark",
+  "list",
+  "--stat",
+  "--sort", "committer-date"
+]
+
+# --------------------
+# Pruning / cleanup
+# --------------------
+prune-all = ["git", "fetch", "--prune"]
+
+# --------------------
+# Diff helpers
+# --------------------
+# d = ["diff"]
+# dc = ["diff", "--staged"]
+# worddiff = ["diff", "--word"]
+# blamec = ["file", "annotate"]
+
+# --------------------
+# More diff utilities
+# --------------------
+# files = ["diff", "--name-only"]
+# changed = ["diff", "--stat"]
+# unstage = ["file", "untrack"]
+
+# --------------------
+# Misc
+# --------------------
+aliases = ["config", "list", "aliases"]
+
+bl = [
+  "bookmark",
+  "list",
+  "--template",
+  """
+if(normal_target,
+  label("bookmark",
+    if(remote, name ++ "@" ++ remote, name)
+  ) ++ " "
+  ++ label("commit_id",
+       normal_target.commit_id().short()
+     )
+  ++ "\n"
+  ++ label("description",
+       "> " ++ normal_target.description().first_line()
+     )
+  ++ " "
+  ++ label("stat",
+       "(+" ++ normal_target.diff().stat().total_added()
+       ++ "/-" ++ normal_target.diff().stat().total_removed()
+       ++ ", " ++ normal_target.diff().stat().files().len() ++ " files)"
+     )
+  ++ "\n"
+  ++ normal_target.diff().files()
+       .map(|f|
+         label("file", "    • " ++ f.path())
+       )
+       .join("\n")
+  ++ "\n\n",
+  label("conflict", name ++ " (no target)\n\n")
+)
+"""
+]
+# >>>>>>> conflict 1 of 1 ends

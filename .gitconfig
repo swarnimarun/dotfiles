@@ -1,3 +1,101 @@
+# <<<<<<< conflict 1 of 1
+# %%%%%%% diff from: zzzzzzzz 00000000
+# \\\\\\\        to: tsoywqxp 5c01d37b
+# +[user]
+# +	name = Swarnim Arun
+# +	email = swarnimarun11@gmail.com
+# +	signingkey = 1A0C34AE02141BA4
+# +[commit]
+# +	gpgsign = true
+# +[tag]
+# +	gpgSign = true
+# +[difftool]
+# +    # Run the difftool immediately, don't ask 'are you sure' each time.
+# +    prompt = false
+# +[pager]
+# +    # Use a pager if the difftool output is larger than one screenful,
+# +    # consistent with the behaviour of `git diff`.
+# +    difftool = true
+# +[diff]
+# +    # Set difftastic as the default difftool, so we don't need to specify
+# +    # `-t difftastic` every time.
+# +    tool = difftastic
+# +[difftool "difftastic"]
+# +    # See `man git-difftool` for a description of MERGED, LOCAL and REMOTE.
+# +    cmd = difft "$MERGED" "$LOCAL" "abcdef1" "100644" "$REMOTE" "abcdef2" "100644"
+# +[filter "lfs"]
+# +	clean = git-lfs clean -- %f
+# +	smudge = git-lfs smudge -- %f
+# +	process = git-lfs filter-process
+# +	required = true
+# +[init]
+# +	defaultBranch = main
+# +[github]
+# +	user = swarnimarun
+# +[merge]
+# +	# Include summaries of merged commits in newly created merge commit messages
+# +	log = true
+# +
+# +[alias]
+# +	# View abbreviated SHA, description, and history graph of the latest 20 commits
+# +	l = log --pretty=oneline -n 20 --graph --abbrev-commit
+# +
+# +	# View the current working tree status using the short format
+# +	s = status -s
+# +
+# +	# Show the diff between the latest commit and the current state
+# +	d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
+# +
+# +	# `git di $number` shows the diff between the state `$number` revisions ago and the current state
+# +	di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
+# +
+# +	# Pull in remote changes for the current repository and all its submodules
+# +	p = !"git pull; git submodule foreach git pull origin master"
+# +
+# +	# Checkout a pull request from origin (of a github repository)
+# +	pr = !"pr() { git fetch origin pull/$1/head:pr-$1; git checkout pr-$1; }; pr"
+# +
+# +	# Clone a repository including all submodules
+# +	c = clone --recursive
+# +
+# +	# Commit all changes
+# +	ca = !git add -A && git commit -av
+# +
+# +	# Switch to a branch, creating it if necessary
+# +	go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
+# +
+# +	# Color graph log view
+# +	graph = log --graph --color --pretty=format:"%C(yellow)%H%C(green)%d%C(reset)%n%x20%cd%n%x20%cn%x20(%ce)%n%x20%s%n"
+# +
+# +	# Show verbose output about tags, branches or remotes
+# +	tags = tag -l
+# +	branches = branch -a
+# +	remotes = remote -v
+# +
+# +	# Amend the currently staged files to the latest commit
+# +	amend = commit --amend --reuse-message=HEAD
+# +
+# +	# Credit an author on the latest commit
+# +	credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
+# +
+# +	# Interactive rebase with the given number of latest commits
+# +	reb = "!r() { git rebase -i HEAD~$1; }; r"
+# +
+# +	# Find branches containing commit
+# +	fb = "!f() { git branch -a --contains $1; }; f"
+# +
+# +	# Find tags containing commit
+# +	ft = "!f() { git describe --always --contains $1; }; f"
+# +
+# +	# Find commits by source code
+# +	fc = "!f() { git log --pretty=format:'%C(yellow)%h	%Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S$1; }; f"
+# +
+# +	# Find commits by commit message
+# +	fm = "!f() { git log --pretty=format:'%C(yellow)%h	%Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
+# +
+# +[url "git@github.com:prassoai"]
+# +    insteadOf = https://github.com/prassoai
+# +++++++ pnlpmnxv 29e4f048 "chore: handle default command jj log better"
 [user]
 	name = Swarnim Arun
 	email = swarnimarun11@gmail.com
@@ -6,25 +104,13 @@
 	gpgsign = true
 [tag]
 	gpgSign = true
-[difftool]
-    # Run the difftool immediately, don't ask 'are you sure' each time.
-    prompt = false
-[pager]
-    # Use a pager if the difftool output is larger than one screenful,
-    # consistent with the behaviour of `git diff`.
-    difftool = true
-[diff]
-    # Set difftastic as the default difftool, so we don't need to specify
-    # `-t difftastic` every time.
-    tool = difftastic
-[difftool "difftastic"]
-    # See `man git-difftool` for a description of MERGED, LOCAL and REMOTE.
-    cmd = difft "$MERGED" "$LOCAL" "abcdef1" "100644" "$REMOTE" "abcdef2" "100644"
+[core]
+	pager = delta --line-numbers --dark -s
 [filter "lfs"]
+	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
-	required = true
 [init]
 	defaultBranch = main
 [github]
@@ -34,33 +120,54 @@
 	log = true
 
 [alias]
-	# View abbreviated SHA, description, and history graph of the latest 20 commits
-	l = log --pretty=oneline -n 20 --graph --abbrev-commit
-
-	# View the current working tree status using the short format
-	s = status -s
+	# status
+	st = status -sb
+	lg = log --oneline --graph --decorate --all
+	last = log -1 HEAD
+	who = shortlog -sn
+	# workflow
+	a = add
+	aa = add -A
+	cm = commit -m
+	ca = commit --amend
+	cane = commit --amend --no-edit
+	# navigation
+	br = branch
+	co = checkout
+	cob = checkout -b
+	recent = branch --sort=-committerdate --format='%(committerdate:relative) %(refname:short)'
+	# pruning
+	prune-all = fetch --prune --all
+	# todo: implement gone for windows
+	gone = branch -vv | grep ': gone]' | awk '{print $1}' | xargs -r git branch -d
+	# diff
+	d = diff
+	dc = diff --cached
+	worddiff = diff --word-diff
+	blamec = blame -w -C -C
+	# more diff utils
+	files = diff --name-status
+	changed = diff --stat
+	unstage = reset HEAD --
+	# misc.
+	root = rev-parse --show-toplevel
+	aliases = config --get-regexp ^alias\\.
 
 	# Show the diff between the latest commit and the current state
 	d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
-
 	# `git di $number` shows the diff between the state `$number` revisions ago and the current state
 	di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
-
 	# Pull in remote changes for the current repository and all its submodules
 	p = !"git pull; git submodule foreach git pull origin master"
-
 	# Checkout a pull request from origin (of a github repository)
 	pr = !"pr() { git fetch origin pull/$1/head:pr-$1; git checkout pr-$1; }; pr"
 
 	# Clone a repository including all submodules
 	c = clone --recursive
-
 	# Commit all changes
 	ca = !git add -A && git commit -av
-
 	# Switch to a branch, creating it if necessary
 	go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
-
 	# Color graph log view
 	graph = log --graph --color --pretty=format:"%C(yellow)%H%C(green)%d%C(reset)%n%x20%cd%n%x20%cn%x20(%ce)%n%x20%s%n"
 
@@ -71,24 +178,16 @@
 
 	# Amend the currently staged files to the latest commit
 	amend = commit --amend --reuse-message=HEAD
-
 	# Credit an author on the latest commit
 	credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
-
 	# Interactive rebase with the given number of latest commits
 	reb = "!r() { git rebase -i HEAD~$1; }; r"
-
 	# Find branches containing commit
 	fb = "!f() { git branch -a --contains $1; }; f"
-
 	# Find tags containing commit
 	ft = "!f() { git describe --always --contains $1; }; f"
-
 	# Find commits by source code
 	fc = "!f() { git log --pretty=format:'%C(yellow)%h	%Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S$1; }; f"
-
 	# Find commits by commit message
 	fm = "!f() { git log --pretty=format:'%C(yellow)%h	%Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
-
-[url "git@github.com:prassoai"]
-    insteadOf = https://github.com/prassoai
+# >>>>>>> conflict 1 of 1 ends
