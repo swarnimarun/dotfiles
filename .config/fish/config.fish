@@ -1,4 +1,5 @@
 if status is-interactive
+    set -U fish_greeting
     source (starship init fish --print-full-init | psub)
 end
 
@@ -30,6 +31,9 @@ else if command -q hx
     alias nvim hx
     alias helix hx
 end
+
+alias ls eza
+alias cat bat
 
 if test -d $HOME/gcloud
     # The next line updates PATH for the Google Cloud SDK.
