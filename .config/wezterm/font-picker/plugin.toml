@@ -1,0 +1,4 @@
+name = "font-picker"
+version = "0.1.0"
+description = "Live-switch the terminal font from a fuzzy selector menu, with the choice remembered across restarts."
+authors = ["swarnim"]

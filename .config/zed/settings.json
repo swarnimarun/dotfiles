@@ -7,15 +7,45 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "lsp": {
+    "rill-lsp": {
+      "binary": {
+        "path": "/Users/swarnim/.cargo/bin/rill-lsp",
+        "arguments": []
+      },
+      "languages": ["Rill"]
+    }
+  },
+  "terminal": {
+    "shell": {
+      "program": "fish"
+    }
+  },
+  "active_pane_modifiers": {
+    "inactive_opacity": 0.6
+  },
+  "git": {
+    "disable_git": false
+  },
+  "disable_ai": false,
+  "edit_predictions": {
+    "allow_data_collection": "no"
+  },
   "cli_default_open_behavior": "existing_window",
   "agent_servers": {
     "pi-acp": {
+      "favorite_config_option_values": {
+        "thought_level": [
+          "xhigh",
+          "off"
+        ]
+      },
+      "default_config_options": {
+        "thought_level": "high"
+      },
       "type": "registry"
     },
     "opencode": {
-      "type": "registry"
-    },
-    "dirac": {
       "type": "registry"
     },
     "claude-acp": {
@@ -25,7 +55,7 @@
       "type": "registry"
     }
   },
-  "base_keymap": "JetBrains",
+  "base_keymap": "VSCode",
   "project_panel": {
     "dock": "right"
   },
@@ -33,9 +63,13 @@
     "dock": "right"
   },
   "collaboration_panel": {
+    "button": false,
     "dock": "right"
   },
   "agent": {
+    "threads_sidebar": {
+      "position": "right"
+    },
     "dock": "left",
     "favorite_models": [],
     "model_parameters": []
@@ -49,19 +83,28 @@
     "diagnostics": false,
     "metrics": false
   },
-  "icon_theme": "Zed (Default)",
+  "icon_theme": {
+    "mode": "dark",
+    "light": "Zed (Default)",
+    "dark": "Zed (Default)"
+  },
   "ui_font_size": 16,
   "buffer_font_size": 15,
-  "theme": {
-    "mode": "dark",
-    "light": "One Light",
-    "dark": "Ayu Dark",
-  },
+  "theme": "Retrofit Dark",
   // comx (see extensions/comx-zed): render purely from comx-lsp semantic tokens
   // (no tree-sitter grammar exists yet).
   "languages": {
     "comx": {
       "semantic_tokens": "full"
+    },
+    // Rill (see extensions/rill-zed in the rill repo): highlighting comes
+    // from `rill lsp` semantic tokens; there is no tree-sitter grammar.
+    "Rill": {
+      "semantic_tokens": "full",
+      "inlay_hints": {
+        "enabled": true,
+        "show_type_hints": true
+      }
     }
   },
 }

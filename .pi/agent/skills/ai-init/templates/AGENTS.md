@@ -117,7 +117,7 @@ TODO: fill in if the project has conventions, e.g.:
 
 TODO: keep this section only if the project uses subagents, e.g.:
 
-- Web research / anything requiring web search MUST use the `web-researcher` agent (`openai-codex/gpt-5.6-luna`, high thinking) — see `~/.pi/agent/AGENTS.md`.
+- Web research / anything requiring web search MUST use the `web-researcher` agent (`openai-codex/gpt-6-luna`, high thinking) — see `~/.pi/agent/AGENTS.md`.
 - Fallback ONLY when the `web-researcher` agent is unavailable (never the default — attempt
   `web-researcher`/luna first): read-only local-tool research with the current model (`curl`,
   `gh`, raw.githubusercontent.com, DuckDuckGo HTML) — see `~/.pi/agent/AGENTS.md`.

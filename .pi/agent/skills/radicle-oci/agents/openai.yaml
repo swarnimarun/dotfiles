@@ -1,0 +1,6 @@
+interface:
+  display_name: "Radicle OCI"
+  short_description: "Operate the private Radicle seed and Mac peer"
+  default_prompt: "Use $radicle-oci to operate the Oracle seed and authorized Mac peer safely."
+policy:
+  allow_implicit_invocation: true

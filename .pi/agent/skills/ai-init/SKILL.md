@@ -56,8 +56,9 @@ If the user cancels a question, use your best judgment and note the assumption i
 
 If the stack or its conventions are unfamiliar, spawn a read-only research subagent first:
 
-- Use the `web-researcher` agent — `model: "openai-codex/gpt-5.6-luna"`, `thinking: "high"`
+- Use the `web-researcher` agent — `model: "openai-codex/gpt-6-luna"`, `thinking: "high"`
   (mandatory for anything requiring web search; see `~/.pi/agent/AGENTS.md` for the global rule).
+  If `openai-codex/gpt-6-luna` is unavailable, fall back to `openai-codex/gpt-5.6-luna`.
 - Ask it for the stack's canonical build/test/lint commands and common conventions.
 - If no search-capable model is available (e.g. current model is opencode-go/deepseek-v4-flash),
   do the research yourself with read-only local tools (`curl`, `gh`, raw.githubusercontent.com)
@@ -87,7 +88,7 @@ If the stack or its conventions are unfamiliar, spawn a read-only research subag
   explaining what and why, not how; Conventional Commits types only if the project
   requires them.
 - Add a "Subagent conventions" section when the project uses subagents: web research MUST use
-  `web-researcher` (`openai-codex/gpt-5.6-luna`, high thinking); research/review agents are
+  `web-researcher` (`openai-codex/gpt-6-luna`, high thinking); research/review agents are
   read-only; one writer at a time; `.pi-subagents/` artifacts are gitignored.
 
 ### 5. Initialize the project (only if the user confirmed)

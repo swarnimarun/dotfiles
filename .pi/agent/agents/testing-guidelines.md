@@ -1,7 +1,7 @@
 ---
 name: testing-guidelines
 description: Test author and test-quality reviewer following David Cramer's testing guidelines. Prefers integration tests over unit tests, real-world sanitized fixtures over mocks of internals, regression tests for every bug fix, and at least one happy-path test per user entry point.
-model: opencode-go/deepseek-v4-flash
+model: opencode-go/muse-spark-1.3-contributor
 thinking: high
 tools: read, grep, find, ls, bash, edit, write
 systemPromptMode: replace

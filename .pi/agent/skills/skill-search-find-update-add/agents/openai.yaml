@@ -1,0 +1,7 @@
+interface:
+  display_name: "Skill Search and Updates"
+  short_description: "Find and review upstream skill updates"
+  default_prompt: "Use $skill-search-find-update-add to find useful skill additions or updates from PStack and Matt Pocock."
+
+policy:
+  allow_implicit_invocation: false

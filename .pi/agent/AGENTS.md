@@ -14,15 +14,16 @@ These instructions apply to all coding-agent work in this environment.
 
 ## Web search subagents
 
-- Any subagent task that needs to make web search calls (research, fact-checking, fetching/verifying web content, searching GitHub) MUST run on a **gpt-5.6-luna** model at **high thinking**.
+- Any subagent task that needs to make web search calls (research, fact-checking, fetching/verifying web content, searching GitHub) MUST run on the **gpt-6-luna** model from the **openai-codex** provider (the pi Codex subscription) at **high thinking**, when that model is available.
 - The `web-researcher` agent is the DEFAULT for ALL web research and MUST be attempted first; the fallback below is used ONLY when it is genuinely unavailable.
-- Concretely, use the `web-researcher` agent (model `openai-codex/gpt-5.6-luna`, thinking `high`), or pass `model: "openai-codex/gpt-5.6-luna"` and `thinking: "high"` explicitly when spawning web-searching subagents.
-- Do NOT use the bare model name `gpt-5.6-luna` — it resolves to the opencode-go provider, which does not support web search. Always qualify it as `openai-codex/gpt-5.6-luna`.
+- Concretely, use the `web-researcher` agent (model `openai-codex/gpt-6-luna`, thinking `high`), or pass `model: "openai-codex/gpt-6-luna"` and `thinking: "high"` explicitly when spawning web-searching subagents.
+- If `openai-codex/gpt-6-luna` is unavailable, fall back, in order, to `openai-codex/gpt-5.6-luna` at `high` thinking, then to the local-tool research below.
+- Do NOT use the bare model name `gpt-6-luna` — it resolves to the opencode-go provider, which does not support web search. Always qualify it as `openai-codex/gpt-6-luna`.
 - Web-research subagents must be read-only: they search and report; they do not modify the repository.
 
 ### Fallback: local-tool research (ONLY when luna is unavailable)
 
-This is NOT the default. Always try the `web-researcher` agent (`openai-codex/gpt-5.6-luna`,
+This is NOT the default. Always try the `web-researcher` agent (`openai-codex/gpt-6-luna`,
 high thinking) first; the local-tool fallback below is used ONLY when that is genuinely
 unavailable (e.g. the current model does not support native web search, like
 opencode-go/deepseek-v4-flash, and no luna-backed agent can be spawned). When in doubt,
@@ -61,7 +62,7 @@ When a project has no AGENTS.md (new or existing repo), generate it with the **a
 - The skill flow: inspect the repository (never guess what files already decide) → ask the user
   interactive questions with the `ask` tool (select/confirm/input dialogs from the `ai-init`
   extension, using the harness UI hooks) → optionally research the stack with `web-researcher`
-  (`openai-codex/gpt-5.6-luna`, high thinking) → write AGENTS.md from the skill's template and
+  (`openai-codex/gpt-6-luna`, high thinking) → write AGENTS.md from the skill's template and
   the generalized structure reference → optionally scaffold the project (`cargo init`, `justfile`,
   `.gitignore`) when the user confirms.
 - Ask only what the repo cannot answer: purpose, toolchain, build/test/lint/format commands,

@@ -21,6 +21,10 @@
 !.config/starship.toml
 !.config/wezterm/
 !.config/wezterm/wezterm.lua
+!.config/wezterm/font-picker/
+!.config/wezterm/font-picker/init.lua
+!.config/wezterm/font-picker/plugin.toml
+!.config/wezterm/font-picker/README.md
 !.config/zed/
 !.config/zed/settings.json
 !README.md
@@ -40,3 +44,15 @@
 !.pi/agent/skills/**
 !.pi/agent/prompts/
 !.pi/agent/prompts/**
+
+# Custom Codex skills; keep built-in system skills and plugin caches ignored.
+!.codex/
+!.codex/skills/
+!.codex/skills/**
+.codex/skills/.system/
+.codex/skills/.system/**
+
+# Custom Pi skills for the main agent and subagents.
+!.pi/agents/
+!.pi/agents/skills/
+!.pi/agents/skills/**

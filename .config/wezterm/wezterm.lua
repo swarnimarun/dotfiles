@@ -5,15 +5,54 @@ local config = {}
 
 config.window_decorations = "RESIZE"
 config.font_size = 12.0
-config.font = wezterm.font_with_fallback({
-    -- possible weights :: "Thin", "ExtraLight", "Light", "DemiLight", "Book", "Regular", "Medium", "DemiBold", "Bold", "ExtraBold", "Black", "ExtraBlack",
-    -- { family = "MonaspiceNe NF", weight = "Medium" },
-    -- { family = 'CaskaydiaCove Nerd Font Mono', weight = 'Book' },
-    "JetBrains Mono",
-    -- { family = 'Geist Mono', weight = 'Bold' },
-    -- "FiraCode Nerd Font Mono",
-    -- 'DengXian',
+
+-- Font switching: ALT+SHIFT+F opens a fuzzy font menu that switches the font
+-- live (no restart) and remembers the pick in ~/.config/wezterm/.font-picker.state.
+-- ALT+CTRL+F / ALT+CTRL+SHIFT+F cycle forwards/backwards through the list.
+local font_picker = require("font-picker")
+font_picker.setup({
+    -- Everything listed here appears in the menu; add or remove freely.
+    -- Weights: "Thin", "ExtraLight", "Light", "DemiLight", "Book", "Regular",
+    --          "Medium", "DemiBold", "Bold", "ExtraBold", "Black", "ExtraBlack"
+    fonts = {
+        -- Nordwand has no nerd glyphs; icons come from the fallback list below.
+        { family = "Nordwand Mono", weight = "Regular" },
+        { family = "Nordwand Mono", weight = "Medium" },
+        { family = "Nordwand Mono", weight = "Light" },
+        -- balanced / modern, with texture healing
+        { family = "JetBrainsMono Nerd Font Mono", weight = "Regular" },
+        { family = "JetBrainsMono Nerd Font Mono", weight = "Medium" },
+        { family = "Monaspace Neon NF", weight = "Regular" },
+        { family = "Monaspace Neon NF", weight = "Medium" },
+        { family = "Monaspace Argon NF", weight = "Regular" },
+        { family = "Monaspace Xenon NF", weight = "Regular" },
+        { family = "Monaspace Radon NF", weight = "Regular" },
+        { family = "Monaspace Krypton NF", weight = "Regular" },
+        -- clarity first, no operator-reshaping ligatures
+        { family = "0xProto Nerd Font Mono", weight = "Regular" },
+        { family = "AtkynsonMono Nerd Font Mono", weight = "Regular" }, -- Atkinson Hyperlegible Mono
+        -- compact: more code per pane
+        { family = "IosevkaTerm Nerd Font Mono", weight = "Regular" },
+        { family = "IosevkaTerm Nerd Font Mono", weight = "Medium" },
+        -- the rest
+        { family = "Maple Mono NF", weight = "Regular" },
+        { family = "Maple Mono NF", weight = "Medium" },
+        { family = "GeistMono Nerd Font Mono", weight = "Regular" },
+        { family = "CaskaydiaMono Nerd Font Mono", weight = "Regular" },
+        { family = "CaskaydiaCove Nerd Font Mono", weight = "Regular" },
+        { family = "FiraCode Nerd Font Mono", weight = "Regular" },
+        { family = "FiraCode Nerd Font Mono", weight = "Medium" },
+        -- plain mono, no nerd variant installed
+        { family = "JetBrains Mono", weight = "Regular" },
+    },
+    -- Glyphs the chosen font is missing (nerd font icons, emoji) come from here.
+    fallback = { "JetBrains Mono", "Symbols Nerd Font Mono" },
 })
+
+config.font = font_picker.font_for("Nordwand Mono Medium")
+    or wezterm.font_with_fallback({ "JetBrains Mono", "Symbols Nerd Font Mono" })
+-- Honour whatever was last picked from the menu.
+font_picker.apply_saved(config)
 
 -- harfbuzz_features is required for setting texture healing with Monaspace
 -- !==, ===, ==, =/=, </, </>, |>, <|, .=, .-, >=
@@ -159,6 +198,22 @@ config.keys = {
         key = "Z",
         mods = "CTRL",
         action = wezterm.action.TogglePaneZoomState,
+    },
+    -- font switching
+    {
+        key = "f",
+        mods = "ALT|SHIFT",
+        action = font_picker.picker(),
+    },
+    {
+        key = "f",
+        mods = "ALT|CTRL",
+        action = font_picker.cycle(1),
+    },
+    {
+        key = "f",
+        mods = "ALT|CTRL|SHIFT",
+        action = font_picker.cycle(-1),
     },
 }
 

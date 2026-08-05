@@ -13,3 +13,43 @@ file-types = ["cmx"]
 comment-tokens = ["//"]
 indent = { tab-width = 4, unit = "    " }
 language-servers = ["comx-lsp"]
+
+# Rill uses this checkout's compiled `rill lsp`; existing PATH tools are unchanged.
+
+[language-server.rill]
+command = "/Users/swarnim/repos/github.com/swarnimarun/rill/target/release/rill"
+args = ["lsp"]
+
+[[language]]
+name = "rill"
+scope = "source.rill"
+file-types = ["rill"]
+comment-tokens = ["//"]
+# The Rill formatter indents with four spaces.
+indent = { tab-width = 4, unit = "    " }
+language-servers = ["rill"]
+roots = ["PLAN.md", ".git"]
+
+# The local grammar is compiled from this checkout. Rerun editors/helix/setup.py
+# after grammar changes to refresh the installed parser and queries. Formatting
+# uses the Rill LSP.
+
+[[grammar]]
+name = "rill"
+source = { path = "/Users/swarnim/repos/github.com/swarnimarun/rill/editors/tree-sitter-rill" }
+
+# Goose (aardappel/goose). The compiler is installed as `goosc` so it does not
+# collide with Block's `goose` CLI; the binary finds its stdlib beside itself.
+
+[language-server.goose]
+command = "goosc"
+args = ["lsp"]
+
+[[language]]
+name = "goose"
+scope = "source.goose"
+file-types = ["goose"]
+comment-tokens = ["//"]
+indent = { tab-width = 4, unit = "    " }
+language-servers = ["goose"]
+roots = [".git"]

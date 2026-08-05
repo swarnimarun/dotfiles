@@ -7,5 +7,5 @@ With rest of the setup with jj and git, with helix as editor and opencode for my
 ## Install Additional .sh
 
 ```
-brew install jj opencode helix wezterm fish starship ripgrep fzf k9s gnupg delta
+brew install jj opencode helix wezterm fish starship ripgrep fzf k9s gnupg git-delta
 ```
